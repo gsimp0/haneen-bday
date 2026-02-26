@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Game</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="container">
+
+<nav class="nav">
+  <div class="brand">Haneen</div>
+  <div class="links">
+    <a href="index.html">Home</a>
+    <a href="letters.html">Letters</a>
+    <a class="active" href="game.html">Game</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="kicker">mini game</div>
+  <h1>A small game for you</h1>
+  <p>Answer the questions to unlock something.</p>
+</header>
+
+<div class="card">
+  <div id="question"></div>
+</div>
+
+<div class="grid" id="answers"></div>
+
+<div class="card" id="result" style="display:none;">
+  <h2>Unlocked</h2>
+  <p id="finalMessage"></p>
+</div>
+
+</div>
+
+<script src="js/game.js"></script>
+
+</body>
+</html>
