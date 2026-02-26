@@ -1,16 +1,42 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Letters</title>
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
+  <div class="container">
+    <nav class="nav">
+      <div class="brand">Haneen</div>
+      <div class="links">
+        <a href="index.html">Home</a>
+        <a class="active" href="letters.html">Letters</a>
+      </div>
+    </nav>
 
-<h1>Letters for you</h1>
+    <header class="hero">
+      <div class="kicker">open-when letters</div>
+      <h1>Letters</h1>
+      <p>Click one. Read slowly.</p>
+    </header>
 
-<p>Open when you feel overwhelmed:</p>
-<p>You are stronger than you think.</p>
+    <section class="grid" id="lettersGrid"></section>
 
-<p><a href="index.html">Back home</a></p>
+    <div class="modal-backdrop" id="backdrop" role="dialog" aria-modal="true">
+      <div class="modal">
+        <div class="top">
+          <h2 id="modalTitle"></h2>
+          <button class="btn" id="closeBtn" type="button">Close</button>
+        </div>
+        <p id="modalBody"></p>
+      </div>
+    </div>
 
+    <div class="footer">Add as many as you want.</div>
+  </div>
+
+  <script src="js/letters.js"></script>
 </body>
 </html>
