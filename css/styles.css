@@ -230,3 +230,31 @@ p{
   .float-word.w6{ font-size: 18px; }
   .float-word.w7{ font-size: 18px; }
 }
+
+/* Photo gallery inside modal */
+.gallery{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap:10px;
+  margin-top:10px;
+}
+
+.gallery a{
+  display:block;
+  border-radius: 12px;
+  overflow:hidden;
+  border:1px solid var(--border);
+  background:#fff;
+}
+
+.gallery img{
+  width:100%;
+  height:120px;
+  object-fit:cover;
+  display:block;
+}
+
+@media (max-width: 640px){
+  .gallery{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gallery img{ height:110px; }
+}
