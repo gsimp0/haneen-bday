@@ -185,45 +185,113 @@
 
   function drawWhaleBody(w, facing) {
     const f = facing ?? 1;
-
-    // Body
+  
+    // Colors (tweak if you want)
+    const body = "#0f2f4f";
+    const belly = "rgba(255,255,255,0.10)";
+    const detail = "rgba(255,255,255,0.75)";
+    const shadow = "rgba(0,0,0,0.08)";
+  
+    // Body dimensions
+    const L = w.r * 3.1;   // length
+    const Hh = w.r * 1.55; // height
+    const x = w.x;
+    const y = w.y;
+  
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(f, 1);
+  
+    // Soft shadow
     ctx.beginPath();
-    ctx.fillStyle = "#0f2f4f";
-    ctx.ellipse(w.x, w.y, w.r * 1.35, w.r, 0, 0, Math.PI * 2);
+    ctx.fillStyle = shadow;
+    ctx.ellipse(0, 6, L * 0.42, Hh * 0.42, 0, 0, Math.PI * 2);
     ctx.fill();
-
-    // Soft highlight
+  
+    // Main body (teardrop-ish)
     ctx.beginPath();
-    ctx.fillStyle = "rgba(255,255,255,0.08)";
-    ctx.ellipse(w.x + f * 6, w.y - 6, w.r * 0.9, w.r * 0.55, -0.2, 0, Math.PI * 2);
+    ctx.fillStyle = body;
+    ctx.moveTo(L * 0.48, 0);                      // nose
+    ctx.quadraticCurveTo(L * 0.18, -Hh * 0.65, -L * 0.35, -Hh * 0.25);
+    ctx.quadraticCurveTo(-L * 0.55, 0, -L * 0.45, Hh * 0.35);
+    ctx.quadraticCurveTo(-L * 0.10, Hh * 0.75, L * 0.42, Hh * 0.20);
+    ctx.quadraticCurveTo(L * 0.55, Hh * 0.05, L * 0.48, 0);
+    ctx.closePath();
     ctx.fill();
-
-    // Tail
-    const tx = w.x - f * (w.r * 1.25);
-    const ty = w.y;
+  
+    // Tail flukes
+    const tailX = -L * 0.55;
+    const tailY = 0;
     ctx.beginPath();
-    ctx.fillStyle = COLORS.whale;
-    ctx.moveTo(tx, ty);
-    ctx.quadraticCurveTo(tx - f * 18, ty - 16, tx - f * 30, ty - 2);
-    ctx.quadraticCurveTo(tx - f * 18, ty + 16, tx, ty);
+    ctx.fillStyle = body;
+    ctx.moveTo(tailX, tailY);
+    ctx.quadraticCurveTo(tailX - L * 0.12, tailY - Hh * 0.35, tailX - L * 0.26, tailY - Hh * 0.10);
+    ctx.quadraticCurveTo(tailX - L * 0.18, tailY + Hh * 0.05, tailX - L * 0.12, tailY + Hh * 0.25);
+    ctx.quadraticCurveTo(tailX - L * 0.02, tailY + Hh * 0.12, tailX, tailY);
+    ctx.closePath();
     ctx.fill();
-
+  
+    ctx.beginPath();
+    ctx.fillStyle = body;
+    ctx.moveTo(tailX, tailY);
+    ctx.quadraticCurveTo(tailX - L * 0.12, tailY + Hh * 0.35, tailX - L * 0.26, tailY + Hh * 0.10);
+    ctx.quadraticCurveTo(tailX - L * 0.18, tailY - Hh * 0.05, tailX - L * 0.12, tailY - Hh * 0.25);
+    ctx.quadraticCurveTo(tailX - L * 0.02, tailY - Hh * 0.12, tailX, tailY);
+    ctx.closePath();
+    ctx.fill();
+  
+    // Dorsal fin
+    ctx.beginPath();
+    ctx.fillStyle = body;
+    ctx.moveTo(-L * 0.05, -Hh * 0.35);
+    ctx.quadraticCurveTo(-L * 0.12, -Hh * 0.78, L * 0.10, -Hh * 0.45);
+    ctx.quadraticCurveTo(L * 0.02, -Hh * 0.40, -L * 0.05, -Hh * 0.35);
+    ctx.fill();
+  
+    // Belly highlight
+    ctx.beginPath();
+    ctx.fillStyle = belly;
+    ctx.ellipse(L * 0.08, Hh * 0.18, L * 0.33, Hh * 0.28, 0.15, 0, Math.PI * 2);
+    ctx.fill();
+  
     // Eye
-    const ex = w.x + f * (w.r * 0.55);
-    const ey = w.y - w.r * 0.25;
     ctx.beginPath();
     ctx.fillStyle = "#ffffff";
-    ctx.arc(ex, ey, 3.2, 0, Math.PI * 2);
+    ctx.arc(L * 0.28, -Hh * 0.12, w.r * 0.14, 0, Math.PI * 2);
     ctx.fill();
-
+    ctx.beginPath();
+    ctx.fillStyle = body;
+    ctx.arc(L * 0.31, -Hh * 0.12, w.r * 0.07, 0, Math.PI * 2);
+    ctx.fill();
+  
     // Smile
-    ctx.strokeStyle = "rgba(255,255,255,0.75)";
+    ctx.strokeStyle = detail;
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.arc(w.x + f * (w.r * 0.65), w.y + w.r * 0.15, 10, Math.PI * 0.1, Math.PI * 0.55);
+    ctx.arc(L * 0.30, Hh * 0.05, w.r * 0.45, Math.PI * 1.15, Math.PI * 1.45);
     ctx.stroke();
-  }
+  
+    // Blowhole + spray when near surface
+    const globalY = y; // current y in world
+    if (globalY < waterline + 35) {
+      // blowhole
+      ctx.beginPath();
+      ctx.strokeStyle = "rgba(255,255,255,0.35)";
+      ctx.lineWidth = 2;
+      ctx.arc(L * 0.10, -Hh * 0.33, w.r * 0.18, Math.PI * 1.1, Math.PI * 1.9);
+      ctx.stroke();
+  
+      // spray (tiny arcs)
+      ctx.strokeStyle = "rgba(255,255,255,0.28)";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(L * 0.10, -Hh * 0.55, w.r * 0.6, Math.PI * 1.15, Math.PI * 1.85);
+      ctx.stroke();
+    }
 
+    ctx.restore();
+  }
+  
   function drawFish(f) {
     ctx.beginPath();
     ctx.fillStyle = "#ffd166"; // golden fish;
