@@ -18,7 +18,7 @@
 body{
   margin:0;
   font-family:var(--font);
-  background:#f6f3ee;
+  background;
   color:var(--text);
   line-height:1.45;     /* slightly tighter */
   letter-spacing:-0.2px; /* subtle tightening */
