@@ -3,42 +3,45 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Game</title>
+  <title>Whale Game</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+  <div class="container">
 
-<div class="container">
+    <nav class="nav">
+      <div class="brand">Haneen</div>
+      <div class="links">
+        <a href="index.html">Home</a>
+        <a href="letters.html">Letters</a>
+        <a class="active" href="game.html">Game</a>
+      </div>
+    </nav>
 
-<nav class="nav">
-  <div class="brand">Haneen</div>
-  <div class="links">
-    <a href="index.html">Home</a>
-    <a href="letters.html">Letters</a>
-    <a class="active" href="game.html">Game</a>
+    <header class="hero">
+      <div class="kicker">mini game</div>
+      <h1>Whale jumps</h1>
+      <p>
+        Move: Arrow keys or WASD. Jump: Space. Collect fish. Press B to toggle baby whale.
+      </p>
+    </header>
+
+    <div class="card">
+      <canvas id="game" width="900" height="520" style="width:100%; height:auto; display:block; border-radius:12px;"></canvas>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+        <button class="btn" id="restartBtn" type="button">Restart</button>
+        <button class="btn" id="toggleBabyBtn" type="button">Toggle baby whale (B)</button>
+      </div>
+
+      <p style="margin-top:12px;">
+        Tip: time your jump so you splash back near the fish.
+      </p>
+    </div>
+
+    <div class="footer">Made for whale-loving, outdoors-loving, fast-sprinting poets.</div>
   </div>
-</nav>
 
-<header class="hero">
-  <div class="kicker">mini game</div>
-  <h1>A small game for you</h1>
-  <p>Answer the questions to unlock something.</p>
-</header>
-
-<div class="card">
-  <div id="question"></div>
-</div>
-
-<div class="grid" id="answers"></div>
-
-<div class="card" id="result" style="display:none;">
-  <h2>Unlocked</h2>
-  <p id="finalMessage"></p>
-</div>
-
-</div>
-
-<script src="js/game.js"></script>
-
+  <script src="js/whale-game.js"></script>
 </body>
 </html>
