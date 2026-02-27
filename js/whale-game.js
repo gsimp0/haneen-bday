@@ -152,33 +152,33 @@
   };
 
   function drawBackground() {
-    // Sky gradient
+  // SKY (light blue gradient)
     const sky = ctx.createLinearGradient(0, 0, 0, waterline);
-    sky.addColorStop(0, COLORS.skyTop);
-    sky.addColorStop(1, COLORS.skyBottom);
+    sky.addColorStop(0, "#a8d8ff");
+    sky.addColorStop(1, "#eaf6ff");
     ctx.fillStyle = sky;
     ctx.fillRect(0, 0, W, waterline);
-
-    // Sun
+  
+    // SUN (soft warm highlight)
     ctx.beginPath();
-    ctx.fillStyle = COLORS.sun;
-    ctx.arc(W * 0.86, H * 0.16, 58, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(255, 214, 120, 0.7)";
+    ctx.arc(W * 0.85, H * 0.18, 55, 0, Math.PI * 2);
     ctx.fill();
-
-    // Water gradient
+  
+    // WATER (deep ocean blue gradient)
     const water = ctx.createLinearGradient(0, waterline, 0, H);
-    water.addColorStop(0, COLORS.waterTop);
-    water.addColorStop(1, COLORS.waterBottom);
+    water.addColorStop(0, "#1f8edb");
+    water.addColorStop(1, "#083b66");
     ctx.fillStyle = water;
     ctx.fillRect(0, waterline, W, H - waterline);
-
+  
     // Waterline shimmer
-    ctx.strokeStyle = COLORS.waterline;
+    ctx.strokeStyle = "rgba(255,255,255,0.6)";
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(0, waterline);
     for (let x = 0; x <= W; x += 18) {
-      ctx.lineTo(x, waterline + Math.sin((x / W) * Math.PI * 2) * 2);
+      ctx.lineTo(x, waterline + Math.sin(x * 0.02) * 2);
     }
     ctx.stroke();
   }
@@ -188,13 +188,13 @@
 
     // Body
     ctx.beginPath();
-    ctx.fillStyle = COLORS.whale;
+    ctx.fillStyle = "#0f2f4f";
     ctx.ellipse(w.x, w.y, w.r * 1.35, w.r, 0, 0, Math.PI * 2);
     ctx.fill();
 
     // Soft highlight
     ctx.beginPath();
-    ctx.fillStyle = COLORS.whaleShade;
+    ctx.fillStyle = "rgba(255,255,255,0.08)";
     ctx.ellipse(w.x + f * 6, w.y - 6, w.r * 0.9, w.r * 0.55, -0.2, 0, Math.PI * 2);
     ctx.fill();
 
@@ -226,12 +226,12 @@
 
   function drawFish(f) {
     ctx.beginPath();
-    ctx.fillStyle = COLORS.fish;
+    ctx.fillStyle = "#ffd166"; // golden fish;
     ctx.ellipse(f.x, f.y, f.r * 1.1, f.r * 0.7, 0, 0, Math.PI * 2);
     ctx.fill();
 
     ctx.beginPath();
-    ctx.fillStyle = COLORS.fishTail;
+    ctx.fillStyle = "#f4a261";
     ctx.moveTo(f.x - f.r * 1.1, f.y);
     ctx.lineTo(f.x - f.r * 1.6, f.y - f.r * 0.55);
     ctx.lineTo(f.x - f.r * 1.6, f.y + f.r * 0.55);
