@@ -7,64 +7,44 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <div class="container">
-    <nav class="nav">
-      <div class="brand">Haneen</div>
-      <div class="links">
-        <a class="active" href="index.html">Home</a>
-        <a href="letters.html">Letters</a>
-        <a href="game.html">Game</a>
-      </div>
-    </nav>
 
-    <header class="hero">
-      <div class="kicker">birthday website</div>
-      <h1>Happy Birthday, Haneen</h1>
-      <p>
-        This is a small world made for you. Click around and discover things.
-      </p>
-    </header>
-
-    <div class="card">
-      <div class="kicker">explore</div>
-      <h2>Wander</h2>
-      <p>Tap the objects. Some open pages, some open surprises.</p>
-
-      <div id="scene" class="scene" aria-label="Exploration scene">
-        <a class="spot s-whale" href="game.html">
-          <span class="label">Whale jumps</span>
-        </a>
-
-        <button class="spot s-notebook" type="button" data-open="poem">
-          <span class="label">A poem fragment</span>
-        </button>
-
-        <a class="spot s-tent" href="letters.html">
-          <span class="label">Open-when letters</span>
-        </a>
-
-        <button class="spot s-sesame" type="button" data-open="sesame">
-          <span class="label">Sesame fortune</span>
-        </button>
-
-        <button class="spot s-radio" type="button" data-open="music">
-          <span class="label">Our playlist</span>
-        </button>
-
-        <button class="spot s-stove" type="button" data-open="cook">
-          <span class="label">Kitchen compliment</span>
-        </button>
-
-        <button class="spot s-trail" type="button" data-open="trail">
-          <span class="label">Trail sign</span>
-        </button>
-      </div>
+  <nav class="nav">
+    <div class="brand">Haneen</div>
+    <div class="links">
+      <a class="active" href="index.html">Home</a>
+      <a href="letters.html">Letters</a>
+      <a href="game.html">Game</a>
+      <a href="photos.html">Photos</a>
     </div>
+  </nav>
 
-    <div class="footer">Made just for you.</div>
-  </div>
+  <main class="page">
+    <section class="space">
+      <div class="space-inner">
+        <div class="kicker">birthday website</div>
+        <h1 class="space-title">Happy Birthday, Haneen</h1>
+        <p class="space-sub">
+          Click the words. Discover things slowly.
+        </p>
 
-  <!-- Modal -->
+        <!-- floating words -->
+        <a class="float-word w1" href="game.html">Whale game</a>
+        <a class="float-word w2" href="letters.html">Letters</a>
+
+        <button class="float-word w3" type="button" data-open="music">Music</button>
+        <button class="float-word w4" type="button" data-open="poem">Poem</button>
+        <button class="float-word w5" type="button" data-open="sesame">Sesame</button>
+        <button class="float-word w6" type="button" data-open="future">Future</button>
+
+        <!-- optional: if you do not have photos.html yet, remove this -->
+        <a class="float-word w7" href="photos.html">Photos</a>
+
+        <div class="hint">Tip: try clicking the empty space too.</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal (reuses your modal styling in styles.css) -->
   <div class="modal-backdrop" id="backdrop" role="dialog" aria-modal="true">
     <div class="modal">
       <div class="top">
@@ -76,6 +56,6 @@
     </div>
   </div>
 
-  <script src="js/explore.js"></script>
+  <script src="js/constellation.js?v=1"></script>
 </body>
 </html>
