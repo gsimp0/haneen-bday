@@ -254,3 +254,30 @@ p{ margin:0; color:var(--muted); max-width:75ch; }
   background: rgba(255,255,255,0.18);
   border: 1px solid rgba(255,255,255,0.24);
 }
+
+
+/* FORCE constellation layout */
+.page{ padding-top: 78px; }
+
+.space{ min-height: calc(100vh - 78px); }
+.space-inner{
+  position: relative !important;
+  min-height: calc(100vh - 78px) !important;
+}
+
+.float-word{
+  position: absolute !important;
+  display: inline-block !important;
+  background: transparent !important;
+  border: 0 !important;
+  padding: 0 !important;
+  font: inherit;
+}
+
+.float-word.w1{ left: 10%; top: 46%; font-size: 42px; }
+.float-word.w2{ left: 60%; top: 26%; font-size: 48px; }
+.float-word.w3{ left: 22%; top: 68%; font-size: 30px; }
+.float-word.w4{ left: 72%; top: 58%; font-size: 28px; }
+.float-word.w5{ left: 44%; top: 40%; font-size: 24px; }
+.float-word.w6{ left: 70%; top: 74%; font-size: 22px; }
+.float-word.w7{ left: 12%; top: 28%; font-size: 22px; }
