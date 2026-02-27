@@ -86,3 +86,31 @@ For your softness and your fire.`
     }
   });
 })();
+
+
+photos: {
+  title: "Photos",
+  body: "A few moments I keep.",
+  extra: `
+    <div class="gallery">
+      <a href="assets/photos/20251120_043252059_iOS.jpg" target="_blank" rel="noopener">
+        <img src="assets/photos/20251120_043252059_iOS.jpg" alt="Photo 1">
+      </a>
+      <a href="assets/photos/20251120_043726143_iOS.jpg" target="_blank" rel="noopener">
+        <img src="assets/photos/20251120_043726143_iOS.jpg" alt="Photo 2">
+      </a>
+      <a href="assets/photos/20251120_043741610_iOS.jpg" target="_blank" rel="noopener">
+        <img src="assets/photos/20251120_043741610_iOS.jpg" alt="Photo 3">
+      </a>
+      <a href="assets/photos/20251120_074029585_iOS.jpg" target="_blank" rel="noopener">
+        <img src="assets/photos/20251120_074029585_iOS.jpg" alt="Photo 4">
+      </a>
+      <a href="assets/photos/20251121_014436872_iOS.jpg" target="_blank" rel="noopener">
+        <img src="assets/photos/20251121_014436872_iOS.jpg" alt="Photo 5">
+      </a>
+      <a href="assets/photos/20251214_114438000_iOS.jpg" target="_blank" rel="noopener">
+        <img src="assets/photos/20251214_114438000_iOS.jpg" alt="Photo 6">
+      </a>
+    </div>
+  `
+},
