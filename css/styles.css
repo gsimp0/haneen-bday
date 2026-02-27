@@ -259,10 +259,12 @@ p{ margin:0; color:var(--muted); max-width:75ch; }
 /* FORCE constellation layout */
 .page{ padding-top: 78px; }
 
-.space{ min-height: calc(100vh - 78px); }
 .space-inner{
-  position: relative !important;
-  min-height: calc(100vh - 78px) !important;
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - 78px);
+  padding: 36px 24px 36px 64px; /* top right bottom left */
+  overflow: hidden;
 }
 
 .float-word{
