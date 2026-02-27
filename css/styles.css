@@ -249,12 +249,12 @@ p{
 
 .gallery img{
   width:100%;
-  height:120px;
+  height:140px;
   object-fit:cover;
   display:block;
 }
 
 @media (max-width: 640px){
   .gallery{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .gallery img{ height:110px; }
+  .gallery img{ height:120px; }
 }
