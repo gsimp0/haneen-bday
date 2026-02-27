@@ -21,53 +21,61 @@
       <div class="kicker">birthday website</div>
       <h1>Happy Birthday, Haneen</h1>
       <p>
-        I made you a small place to keep messages and little moments.
-        Click around slowly.
+        This is a small world made for you. Click around and discover things.
       </p>
     </header>
 
-    <section class="grid">
-      <a class="tile" style="grid-column: span 12;" href="letters.html">
-        <div class="kicker">open-when</div>
-        <h2>Letters</h2>
-        <p>Notes for specific moods and moments.</p>
-      </a>
+    <div class="card">
+      <div class="kicker">explore</div>
+      <h2>Wander</h2>
+      <p>Tap the objects. Some open pages, some open surprises.</p>
 
-      <a class="tile" style="grid-column: span 12;" href="game.html">
-        <div class="kicker">game</div>
-        <h2>Whale jumps</h2>
-        <p>Collect fish, jump out of the water, bring the baby whale along.</p>
-      </a>
+      <div id="scene" class="scene" aria-label="Exploration scene">
+        <a class="spot s-whale" href="game.html">
+          <span class="label">Whale jumps</span>
+        </a>
 
-      <div class="card" style="grid-column: span 12;">
-        <div class="kicker">music</div>
-        <h2>Our playlist</h2>
+        <button class="spot s-notebook" type="button" data-open="poem">
+          <span class="label">A poem fragment</span>
+        </button>
 
-        <iframe
-          style="border-radius:12px; width:100%; height:380px; border:0;"
-          src="https://open.spotify.com/embed/playlist/19SKN1R8KuCZf2S9CS6130"
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-          loading="lazy">
-        </iframe>
+        <a class="spot s-tent" href="letters.html">
+          <span class="label">Open-when letters</span>
+        </a>
 
-        <p style="margin-top:12px;">
-          <a class="btn" href="https://open.spotify.com/playlist/19SKN1R8KuCZf2S9CS6130" target="_blank" rel="noopener">
-            Open in Spotify
-          </a>
-        </p>
+        <button class="spot s-sesame" type="button" data-open="sesame">
+          <span class="label">Sesame fortune</span>
+        </button>
+
+        <button class="spot s-radio" type="button" data-open="music">
+          <span class="label">Our playlist</span>
+        </button>
+
+        <button class="spot s-stove" type="button" data-open="cook">
+          <span class="label">Kitchen compliment</span>
+        </button>
+
+        <button class="spot s-trail" type="button" data-open="trail">
+          <span class="label">Trail sign</span>
+        </button>
       </div>
-
-      <div class="card" style="grid-column: span 12;">
-        <div class="kicker">featured memory</div>
-        <h2>A small moment I keep replaying</h2>
-        <p>
-Replace this with a very specific scene (2 to 6 sentences).
-Make it concrete: where you were, what she did, what you noticed, what it meant.
-        </p>
-      </div>
-    </section>
+    </div>
 
     <div class="footer">Made just for you.</div>
   </div>
+
+  <!-- Modal -->
+  <div class="modal-backdrop" id="backdrop" role="dialog" aria-modal="true">
+    <div class="modal">
+      <div class="top">
+        <h2 id="modalTitle"></h2>
+        <button class="btn" id="closeBtn" type="button">Close</button>
+      </div>
+      <p id="modalBody"></p>
+      <div id="modalExtra" style="margin-top:12px;"></div>
+    </div>
+  </div>
+
+  <script src="js/explore.js"></script>
 </body>
 </html>
