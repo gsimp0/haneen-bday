@@ -10,7 +10,7 @@
   --shadow:0 10px 30px rgba(0,0,0,0.06);
   --radius:18px;
   --max:980px;
-  --font: "TeX Gyre Termes", "Times New Roman", Times, serif;
+  --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
 }
 
 *{ box-sizing:border-box; }
@@ -20,8 +20,7 @@ body{
   font-family:var(--font);
   background:var(--bg);
   color:var(--text);
-  line-height:1.45;     /* slightly tighter */
-  letter-spacing:-0.2px; /* subtle tightening */
+  line-height:1.5;
 }
 
 a{ color:inherit; text-decoration:none; }
@@ -43,7 +42,7 @@ a{ color:inherit; text-decoration:none; }
   align-items:center;
   justify-content:space-between;
   padding:14px 24px;
-  background: rgba(255,255,255,0.9);
+  background: rgba(251,250,248,0.75);
   backdrop-filter: blur(10px);
   border-bottom:1px solid var(--border);
 }
@@ -75,18 +74,9 @@ a{ color:inherit; text-decoration:none; }
   text-transform:uppercase;
 }
 
-h1{
-  font-size:52px;
-  font-weight:400;      /* Times titles are not heavy bold */
-  margin:12px 0 14px;
-}
+h1{ font-size:42px; margin:8px 0 10px; }
 
-p{
-  font-size:18px;
-  line-height:1.5;
-  color:var(--text);
-  max-width:70ch;
-}
+p{ margin:0; color:var(--muted); max-width:75ch; }
 
 /* Cards and buttons (used on other pages + modals) */
 .card{
@@ -184,15 +174,15 @@ p{
   cursor:pointer;
   color: rgba(31,31,31,0.92);
   font-weight:800;
-  letter-spacing:0;
+  letter-spacing:0.2px;
   line-height:1;
   user-select:none;
-  transition: transform 160ms ease, opacity 160ms ease;
+  transition: transform 140ms ease, opacity 140ms ease;
   font: inherit;
 }
 
 .float-word:hover{
-  transform: translateY(-1px);
+  transform: translateY(-2px) scale(1.02);
 }
 
 .float-word:focus{
