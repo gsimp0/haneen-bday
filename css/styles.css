@@ -279,3 +279,85 @@ body{ margin:0; }
 .nav + .page{
   padding-top: 78px; /* leaves space for fixed nav */
 }
+
+/* Floating constellation home */
+.space{
+  min-height: calc(100vh - 78px);
+  background: radial-gradient(1200px 600px at 20% 20%, rgba(122,78,45,0.10), transparent 60%),
+              radial-gradient(900px 500px at 80% 30%, rgba(31,31,31,0.06), transparent 55%),
+              linear-gradient(#fbfaf8, #fbfaf8);
+}
+
+.space-inner{
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - 78px);
+  padding: 36px 24px;
+  overflow: hidden;
+}
+
+.space-title{
+  font-size: 56px;
+  margin: 10px 0 10px;
+}
+
+.space-sub{
+  margin: 0;
+  color: var(--muted);
+  max-width: 70ch;
+}
+
+.hint{
+  position: absolute;
+  left: 24px;
+  bottom: 22px;
+  color: rgba(31,31,31,0.55);
+  font-size: 14px;
+}
+
+/* clickable words */
+.float-word{
+  position: absolute;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: rgba(31,31,31,0.92);
+  text-decoration: none;
+  line-height: 1;
+  user-select: none;
+  transition: transform 140ms ease, opacity 140ms ease;
+}
+
+.float-word:hover{
+  transform: translateY(-2px) scale(1.02);
+}
+
+.float-word:focus{
+  outline: 3px solid rgba(31,31,31,0.15);
+  outline-offset: 6px;
+  border-radius: 10px;
+}
+
+/* sizes to feel “floaty” */
+.w1{ font-size: 56px; left: 10%; top: 46%; opacity: 0.95; }
+.w2{ font-size: 64px; left: 60%; top: 26%; opacity: 0.95; }
+.w3{ font-size: 44px; left: 22%; top: 68%; opacity: 0.85; }
+.w4{ font-size: 40px; left: 72%; top: 58%; opacity: 0.85; }
+.w5{ font-size: 36px; left: 44%; top: 40%; opacity: 0.78; }
+.w6{ font-size: 34px; left: 70%; top: 74%; opacity: 0.75; }
+.w7{ font-size: 34px; left: 12%; top: 28%; opacity: 0.75; }
+
+/* make it responsive */
+@media (max-width: 780px){
+  .space-title{ font-size: 40px; }
+  .w1{ font-size: 44px; }
+  .w2{ font-size: 48px; }
+  .w3{ font-size: 34px; }
+  .w4{ font-size: 32px; }
+  .w5{ font-size: 28px; }
+  .w6{ font-size: 26px; }
+  .w7{ font-size: 26px; }
+}
