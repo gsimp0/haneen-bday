@@ -89,8 +89,8 @@
       fish.push({
         x: rand(W * 0.35, W * 0.95),
         y: rand(waterline + 35, H - 30),
-        r: 10,
-        vx: rand(-1.2, -0.4),
+        r: rand(2.2, 3.8),
+        vx: dir * rand(0.25, 0.75),
       });
     }
   }
@@ -171,22 +171,24 @@
     ctx.save();
     ctx.translate(f.x, f.y);
   
-    // Flip fish if moving left
+    // face travel direction
     if (f.vx < 0) ctx.scale(-1, 1);
   
+    // krill body
+    ctx.fillStyle = "rgba(255, 210, 170, 0.9)";
     ctx.beginPath();
-    ctx.fillStyle = "#ffd166";
-    ctx.ellipse(0, 0, f.r * 1.1, f.r * 0.7, 0, 0, Math.PI * 2);
+    ctx.ellipse(0, 0, f.r * 1.6, f.r * 0.7, 0, 0, Math.PI * 2);
     ctx.fill();
   
-    // Tail (always drawn pointing backward)
+    // tiny tail flick
+    ctx.strokeStyle = "rgba(255, 190, 150, 0.85)";
+    ctx.lineWidth = 1.5;
     ctx.beginPath();
-    ctx.fillStyle = "#f4a261";
-    ctx.moveTo(-f.r * 1.1, 0);
-    ctx.lineTo(-f.r * 1.6, -f.r * 0.55);
-    ctx.lineTo(-f.r * 1.6, f.r * 0.55);
-    ctx.closePath();
-    ctx.fill();
+    ctx.moveTo(-f.r * 1.4, 0);
+    ctx.lineTo(-f.r * 2.2, -f.r * 0.7);
+    ctx.moveTo(-f.r * 1.4, 0);
+    ctx.lineTo(-f.r * 2.2, f.r * 0.7);
+    ctx.stroke();
   
     ctx.restore();
   }
