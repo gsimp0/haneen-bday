@@ -11,7 +11,7 @@
   <style>
     /* Photobook page skin */
     :root{
-      --paper: #fbfbf8;
+      --paper: #ffffff;
       --ink: rgba(31,31,31,0.92);
       --quiet: rgba(31,31,31,0.55);
       --hairline: rgba(31,31,31,0.12);
@@ -67,7 +67,7 @@
     .spread{
       display:grid;
       grid-template-columns: repeat(12, 1fr);
-      gap: 18px;
+      gap: 28px;
       align-items:start;
     }
 
@@ -83,27 +83,27 @@
     }
 
     .frame{
-      background: #fff;
-      border-radius: var(--radius);
-      box-shadow: 0 10px 28px rgba(0,0,0,0.07);
-      padding: 10px;
+      padding: 0;
+      background: transparent;
+      box-shadow: none;
+      border-radius: 0;
     }
-
+    
     .frame img{
       width:100%;
       height:100%;
       display:block;
-      border-radius: calc(var(--radius) - 8px);
+      border-radius: 0;
       object-fit: cover;
     }
 
     figcaption{
-      margin-top: 8px;
-      font-size: 12px;
-      color: var(--quiet);
-      display:flex;
-      justify-content:space-between;
-      gap: 10px;
+      margin-top: 10px;
+      font-size: 11px;
+      color: rgba(31,31,31,0.55);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      transform: translateX(10px);
     }
 
     .idx{
@@ -133,11 +133,6 @@
     .t2{ transform: translateY(22px); }
     .t3{ transform: translateY(-6px); }
     .t4{ transform: translateY(14px); }
-
-    /* make some frames feel like different “prints” */
-    .p1 .frame{ padding: 14px; border-radius: 18px; }
-    .p2 .frame{ padding: 8px; border-radius: 14px; }
-    .p3 .frame{ padding: 12px; border-radius: 20px; }
 
     /* Responsive: collapse to 2 columns then 1 */
     @media (max-width: 980px){
@@ -298,12 +293,7 @@
       left.className = "idx";
       left.textContent = `(${pad2(num)})`;
 
-      const right = document.createElement("span");
-      right.className = "hint";
-      right.textContent = "click to view";
-
       cap.appendChild(left);
-      cap.appendChild(right);
 
       fig.appendChild(frame);
       fig.appendChild(cap);
