@@ -196,124 +196,143 @@
   }
 
   // More realistic silhouette + whale-like motion (body flex + tail beat + pitch)
-  function drawWhaleBody(w, facing) {
-    const f = facing ?? 1;
-  
-    const L = w.r * 5.2;   // MUCH longer
-    const H = w.r * 1.8;
-  
-    const phase = w.phase || 0;
-    const pitch = w.pitch || 0;
-    const speed = Math.hypot(w.vx || 0, w.vy || 0);
-  
-    const tailAngle = Math.sin(phase) * (0.12 + Math.min(0.18, speed * 0.03));
-  
-    ctx.save();
-    ctx.translate(w.x, w.y);
-    ctx.scale(f, 1);
-    ctx.rotate(pitch);
-  
-    // ================= BODY =================
-    ctx.beginPath();
-    ctx.fillStyle = "#2e5fd6";
-  
-    ctx.moveTo(-L * 0.38, -H * 0.12);
-  
-    // long arched back
-    ctx.bezierCurveTo(
-      -L * 0.1, -H * 0.75,
-       L * 0.35, -H * 0.65,
-       L * 0.65, -H * 0.15
-    );
-  
-    // tapered snout
-    ctx.bezierCurveTo(
-       L * 0.8, -H * 0.05,
-       L * 0.75,  H * 0.15,
-       L * 0.55,  H * 0.18
-    );
-  
-    // rounded belly
-    ctx.bezierCurveTo(
-       L * 0.2, H * 0.65,
-      -L * 0.25, H * 0.55,
-      -L * 0.45, H * 0.1
-    );
-  
-    ctx.quadraticCurveTo(-L * 0.48, 0, -L * 0.38, -H * 0.12);
-    ctx.closePath();
-    ctx.fill();
-  
-    // ================= BELLY STRIPES =================
-    ctx.strokeStyle = "rgba(255,255,255,0.45)";
-    ctx.lineWidth = 1.6;
-  
-    for (let i = 0; i < 7; i++) {
-      const offset = i * (H * 0.07);
-      ctx.beginPath();
-      ctx.moveTo(L * 0.15, H * 0.05 + offset);
-      ctx.quadraticCurveTo(
-        L * 0.4,
-        H * 0.3 + offset,
-        L * 0.6,
-        H * 0.2 + offset
-      );
-      ctx.stroke();
-    }
-  
-    // ================= DORSAL FIN =================
-    ctx.beginPath();
-    ctx.fillStyle = "#274fc0";
-    ctx.moveTo(L * 0.05, -H * 0.3);
-    ctx.quadraticCurveTo(L * 0.12, -H * 0.75, L * 0.25, -H * 0.35);
-    ctx.closePath();
-    ctx.fill();
-  
-    // ================= LARGE PECTORAL FIN =================
-    ctx.beginPath();
-    ctx.fillStyle = "#274fc0";
-    ctx.moveTo(L * 0.2, H * 0.15);
-    ctx.quadraticCurveTo(L * 0.05, H * 0.7, L * 0.35, H * 0.4);
-    ctx.closePath();
-    ctx.fill();
-  
-    // ================= BIG FLUKES =================
-    ctx.save();
-    ctx.translate(-L * 0.5, 0);
-    ctx.rotate(tailAngle);
-  
-    ctx.beginPath();
-    ctx.fillStyle = "#274fc0";
-  
-    ctx.moveTo(0, 0);
-  
-    ctx.bezierCurveTo(
-      -L * 0.2, -H * 0.4,
-      -L * 0.45, -H * 0.35,
-      -L * 0.55, -H * 0.05
-    );
-  
-    ctx.bezierCurveTo(
-      -L * 0.45, H * 0.25,
-      -L * 0.2, H * 0.4,
-      0, 0
-    );
-  
-    ctx.closePath();
-    ctx.fill();
-  
-    ctx.restore();
-  
-    // ================= EYE =================
-    ctx.beginPath();
-    ctx.fillStyle = "#111";
-    ctx.arc(L * 0.65, -H * 0.05, w.r * 0.13, 0, Math.PI * 2);
-    ctx.fill();
-  
-    ctx.restore();
-  }
+  <!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body { margin:0; background:#fafefe; display:grid; place-items:center; height:100vh; }
+  canvas { background:#fafefe; }
+</style>
+</head>
+<body>
 
-  
+<canvas id="c" width="800" height="500"></canvas>
+
+<script>
+const canvas = document.getElementById("c");
+const ctx = canvas.getContext("2d");
+
+function drawWhale(x, y, s = 1) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(s, s);
+
+  // Matched from your PNG (dominant palette)
+  const BODY    = "#6990ba";
+  const OUTLINE = "#456685";
+  const BELLY   = "#87aad1";
+  const SPOUT   = "#d8e5ec";
+  const DARK    = "#476379";
+  const EYE     = "#2b2b2b";
+
+  ctx.lineWidth = 6;
+  ctx.lineJoin = "round";
+  ctx.lineCap = "round";
+
+  // BODY (soft transition into tail root)
+  ctx.beginPath();
+  ctx.moveTo(-220, 20);
+  ctx.quadraticCurveTo(-160, -40, 80, -20);
+  ctx.quadraticCurveTo(190, -12, 235, -22);      // approach tail
+  ctx.quadraticCurveTo(260, -28, 275, -20);      // tail root (top) softened
+  ctx.quadraticCurveTo(260, 18, 235, 24);        // tail root (bottom) softened
+  ctx.quadraticCurveTo(190, 48, 80, 60);
+  ctx.quadraticCurveTo(-140, 80, -220, 20);
+  ctx.closePath();
+  ctx.fillStyle = BODY;
+  ctx.fill();
+  ctx.strokeStyle = OUTLINE;
+  ctx.stroke();
+
+  // BELLY PATCH
+  ctx.beginPath();
+  ctx.moveTo(-200, 30);
+  ctx.quadraticCurveTo(-60, 110, 120, 40);
+  ctx.quadraticCurveTo(-40, 70, -200, 30);
+  ctx.fillStyle = BELLY;
+  ctx.fill();
+
+  // PECTORAL FIN
+  ctx.beginPath();
+  ctx.moveTo(35, 52);
+  ctx.quadraticCurveTo(110, 135, 160, 70);
+  ctx.quadraticCurveTo(95, 92, 35, 52);
+  ctx.closePath();
+  ctx.fillStyle = BODY;
+  ctx.fill();
+  ctx.strokeStyle = OUTLINE;
+  ctx.stroke();
+
+  // SMALL DORSAL FIN
+  ctx.beginPath();
+  ctx.moveTo(120, -20);
+  ctx.quadraticCurveTo(136, -44, 156, -25);
+  ctx.closePath();
+  ctx.fillStyle = BODY;
+  ctx.fill();
+  ctx.stroke();
+
+  // TAIL FLUKE (wider + flatter + lower height)
+  // anchored at the softened tail root near x ~ 275
+  ctx.beginPath();
+  ctx.moveTo(255, -16);
+
+  // upper lobe out (wide, flat)
+  ctx.quadraticCurveTo(305, -48, 360, -28);
+
+  // center notch (small dip)
+  ctx.quadraticCurveTo(335, -6, 305, -8);
+
+  // lower lobe out (wide, flat)
+  ctx.quadraticCurveTo(335, 10, 360, 38);
+
+  // return toward body
+  ctx.quadraticCurveTo(305, 26, 255, 10);
+  ctx.closePath();
+
+  ctx.fillStyle = BODY;
+  ctx.fill();
+  ctx.strokeStyle = OUTLINE;
+  ctx.stroke();
+
+  // EYE
+  ctx.beginPath();
+  ctx.arc(-170, 0, 6, 0, Math.PI * 2);
+  ctx.fillStyle = EYE;
+  ctx.fill();
+
+  // MOUTH (subtle)
+  ctx.beginPath();
+  ctx.moveTo(-200, 10);
+  ctx.quadraticCurveTo(-170, 20, -150, 10);
+  ctx.strokeStyle = DARK;
+  ctx.lineWidth = 4;
+  ctx.stroke();
+
+  // WATER SPOUT
+  ctx.fillStyle = SPOUT;
+  ctx.beginPath();
+  ctx.ellipse(-130, -60, 8, 18, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.ellipse(-150, -70, 6, 14, -0.3, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.ellipse(-110, -70, 6, 14, 0.3, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.restore();
+}
+
+drawWhale(400, 250, 1);
+</script>
+
+</body>
+</html>
+
   function drawFish(f) {
     ctx.beginPath();
     ctx.fillStyle = "#ffd166"; // golden fish;
