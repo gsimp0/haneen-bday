@@ -215,7 +215,7 @@
     const isBaby = entity.r <= 18;
 
     // scale relative to hit radius
-    const s = (entity.r / 26) * 0.85;
+    const s = (entity.r / 26) * 0.45;
 
     // gentle swim flex
     const flex = Math.sin(entity.phase) * 0.08;
