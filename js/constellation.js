@@ -116,18 +116,13 @@ photos: {
 },
 
 function rainSesame(){
-  for(let i = 0; i < 80; i++){
+  for(let i = 0; i < 90; i++){
     const seed = document.createElement("div");
     seed.className = "sesame-seed";
-
-    seed.style.left = Math.random() * 100 + "vw";
-    seed.style.animationDuration = (2 + Math.random() * 2) + "s";
-    seed.style.opacity = Math.random();
-
+    seed.style.left = (Math.random() * 100) + "vw";
+    seed.style.animationDuration = (2 + Math.random() * 2.5) + "s";
+    seed.style.opacity = (0.4 + Math.random() * 0.6);
     document.body.appendChild(seed);
-
-    setTimeout(() => {
-      seed.remove();
-    }, 4000);
+    setTimeout(() => seed.remove(), 5200);
   }
 }
