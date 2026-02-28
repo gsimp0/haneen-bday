@@ -110,11 +110,13 @@ For your softness and your fire.`
   document.querySelectorAll("[data-open]").forEach((btn) => {
     btn.addEventListener("click", () => {
       const key = btn.getAttribute("data-open");
-
+  
+      // Only sesame → rain, no modal
       if (key === "sesame") {
         rainSesame();
+        return;
       }
-
+  
       const item = items[key];
       if (!item) return;
       openModal(item.title, item.body, item.extra || "");
