@@ -61,6 +61,10 @@
     r: 26,
     jumpReady: true,
     facing: 1,
+
+    // visual animation state
+    phase: 0,
+    pitch: 0,
   };
 
   const baby = {
@@ -69,6 +73,10 @@
     vx: 0,
     vy: 0,
     r: 16,
+
+    // visual animation state
+    phase: 0,
+    pitch: 0,
   };
 
   const fish = [];
@@ -117,11 +125,15 @@
     whale.vy = 0;
     whale.jumpReady = true;
     whale.facing = 1;
+    whale.phase = 0;
+    whale.pitch = 0;
 
     baby.x = whale.x - 70;
     baby.y = whale.y + 18;
     baby.vx = 0;
     baby.vy = 0;
+    baby.phase = 0;
+    baby.pitch = 0;
 
     bubbles.length = 0;
     spawnFish(6);
@@ -152,26 +164,26 @@
   };
 
   function drawBackground() {
-  // SKY (light blue gradient)
+    // SKY (light blue gradient)
     const sky = ctx.createLinearGradient(0, 0, 0, waterline);
     sky.addColorStop(0, "#a8d8ff");
     sky.addColorStop(1, "#eaf6ff");
     ctx.fillStyle = sky;
     ctx.fillRect(0, 0, W, waterline);
-  
+
     // SUN (soft warm highlight)
     ctx.beginPath();
     ctx.fillStyle = "rgba(255, 214, 120, 0.7)";
     ctx.arc(W * 0.85, H * 0.18, 55, 0, Math.PI * 2);
     ctx.fill();
-  
+
     // WATER (deep ocean blue gradient)
     const water = ctx.createLinearGradient(0, waterline, 0, H);
     water.addColorStop(0, "#1f8edb");
     water.addColorStop(1, "#083b66");
     ctx.fillStyle = water;
     ctx.fillRect(0, waterline, W, H - waterline);
-  
+
     // Waterline shimmer
     ctx.strokeStyle = "rgba(255,255,255,0.6)";
     ctx.lineWidth = 2;
@@ -183,115 +195,130 @@
     ctx.stroke();
   }
 
+  // More realistic silhouette + whale-like motion (body flex + tail beat + pitch)
   function drawWhaleBody(w, facing) {
     const f = facing ?? 1;
-  
-    // Colors (tweak if you want)
+
     const body = "#0f2f4f";
     const belly = "rgba(255,255,255,0.10)";
-    const detail = "rgba(255,255,255,0.75)";
     const shadow = "rgba(0,0,0,0.08)";
-  
-    // Body dimensions
-    const L = w.r * 3.1;   // length
-    const Hh = w.r * 1.55; // height
-    const x = w.x;
-    const y = w.y;
-  
+
+    const L = w.r * 3.3; // length
+    const Hh = w.r * 1.45; // height
+
+    const phase = w.phase || 0;
+    const pitch = w.pitch || 0;
+    const speed = Math.hypot(w.vx || 0, w.vy || 0);
+
+    // Tail wag increases with speed, but stays subtle
+    const tailWag = Math.sin(phase) * (0.18 + Math.min(0.22, speed * 0.03));
+
+    // Gentle body flex so it feels alive
+    const flexA = Math.sin(phase * 0.7) * (Hh * 0.10);
+    const flexB = Math.sin(phase * 0.7 + 1.6) * (Hh * 0.08);
+
     ctx.save();
-    ctx.translate(x, y);
+    ctx.translate(w.x, w.y);
     ctx.scale(f, 1);
-  
+    ctx.rotate(pitch);
+
     // Soft shadow
     ctx.beginPath();
     ctx.fillStyle = shadow;
-    ctx.ellipse(0, 6, L * 0.42, Hh * 0.42, 0, 0, Math.PI * 2);
+    ctx.ellipse(0, 8, L * 0.44, Hh * 0.40, 0, 0, Math.PI * 2);
     ctx.fill();
-  
-    // Main body (teardrop-ish)
+
+    // Body silhouette
     ctx.beginPath();
     ctx.fillStyle = body;
-    ctx.moveTo(L * 0.48, 0);                      // nose
-    ctx.quadraticCurveTo(L * 0.18, -Hh * 0.65, -L * 0.35, -Hh * 0.25);
-    ctx.quadraticCurveTo(-L * 0.55, 0, -L * 0.45, Hh * 0.35);
-    ctx.quadraticCurveTo(-L * 0.10, Hh * 0.75, L * 0.42, Hh * 0.20);
-    ctx.quadraticCurveTo(L * 0.55, Hh * 0.05, L * 0.48, 0);
+
+    // Top line: tail base to head
+    ctx.moveTo(-L * 0.28, -Hh * 0.18 + flexB);
+    ctx.bezierCurveTo(-L * 0.05, -Hh * 0.60 + flexA, L * 0.28, -Hh * 0.55, L * 0.52, -Hh * 0.10);
+
+    // Head and snout down
+    ctx.bezierCurveTo(L * 0.62, 0, L * 0.56, Hh * 0.22, L * 0.42, Hh * 0.24);
+
+    // Belly back toward tail
+    ctx.bezierCurveTo(L * 0.18, Hh * 0.50, -L * 0.18, Hh * 0.42, -L * 0.34, Hh * 0.14);
+
+    // Tail notch back up
+    ctx.quadraticCurveTo(-L * 0.38, 0, -L * 0.28, -Hh * 0.18 + flexB);
     ctx.closePath();
     ctx.fill();
-  
-    // Tail flukes
-    const tailX = -L * 0.55;
-    const tailY = 0;
+
+    // Dorsal fin (subtle)
     ctx.beginPath();
     ctx.fillStyle = body;
-    ctx.moveTo(tailX, tailY);
-    ctx.quadraticCurveTo(tailX - L * 0.12, tailY - Hh * 0.35, tailX - L * 0.26, tailY - Hh * 0.10);
-    ctx.quadraticCurveTo(tailX - L * 0.18, tailY + Hh * 0.05, tailX - L * 0.12, tailY + Hh * 0.25);
-    ctx.quadraticCurveTo(tailX - L * 0.02, tailY + Hh * 0.12, tailX, tailY);
-    ctx.closePath();
+    ctx.moveTo(L * 0.02, -Hh * 0.30);
+    ctx.quadraticCurveTo(L * 0.10, -Hh * 0.62, L * 0.18, -Hh * 0.28);
+    ctx.quadraticCurveTo(L * 0.10, -Hh * 0.22, L * 0.02, -Hh * 0.30);
     ctx.fill();
-  
-    ctx.beginPath();
-    ctx.fillStyle = body;
-    ctx.moveTo(tailX, tailY);
-    ctx.quadraticCurveTo(tailX - L * 0.12, tailY + Hh * 0.35, tailX - L * 0.26, tailY + Hh * 0.10);
-    ctx.quadraticCurveTo(tailX - L * 0.18, tailY - Hh * 0.05, tailX - L * 0.12, tailY - Hh * 0.25);
-    ctx.quadraticCurveTo(tailX - L * 0.02, tailY - Hh * 0.12, tailX, tailY);
-    ctx.closePath();
-    ctx.fill();
-  
-    // Dorsal fin
-    ctx.beginPath();
-    ctx.fillStyle = body;
-    ctx.moveTo(-L * 0.05, -Hh * 0.35);
-    ctx.quadraticCurveTo(-L * 0.12, -Hh * 0.78, L * 0.10, -Hh * 0.45);
-    ctx.quadraticCurveTo(L * 0.02, -Hh * 0.40, -L * 0.05, -Hh * 0.35);
-    ctx.fill();
-  
+
     // Belly highlight
     ctx.beginPath();
     ctx.fillStyle = belly;
-    ctx.ellipse(L * 0.08, Hh * 0.18, L * 0.33, Hh * 0.28, 0.15, 0, Math.PI * 2);
+    ctx.ellipse(L * 0.10, Hh * 0.18, L * 0.33, Hh * 0.26, 0.12, 0, Math.PI * 2);
     ctx.fill();
-  
+
     // Eye
     ctx.beginPath();
-    ctx.fillStyle = "#ffffff";
-    ctx.arc(L * 0.28, -Hh * 0.12, w.r * 0.14, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(255,255,255,0.9)";
+    ctx.arc(L * 0.42, -Hh * 0.05, Math.max(2, w.r * 0.12), 0, Math.PI * 2);
     ctx.fill();
+    ctx.beginPath();
+    ctx.fillStyle = "rgba(0,0,0,0.55)";
+    ctx.arc(L * 0.45, -Hh * 0.05, Math.max(1.2, w.r * 0.06), 0, Math.PI * 2);
+    ctx.fill();
+
+    // Pectoral fin (tiny flap)
+    const finFlap = Math.sin(phase * 0.9 + 0.8) * 0.15;
+    ctx.save();
+    ctx.translate(L * 0.20, Hh * 0.12);
+    ctx.rotate(finFlap);
+    ctx.beginPath();
+    ctx.fillStyle = "rgba(0,0,0,0.12)";
+    ctx.moveTo(0, 0);
+    ctx.quadraticCurveTo(L * 0.12, Hh * 0.18, -L * 0.02, Hh * 0.32);
+    ctx.quadraticCurveTo(-L * 0.06, Hh * 0.18, 0, 0);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+
+    // Tail flukes (rotate around tail base for realistic swimming)
+    ctx.save();
+    ctx.translate(-L * 0.34, 0);
+    ctx.rotate(tailWag);
+
     ctx.beginPath();
     ctx.fillStyle = body;
-    ctx.arc(L * 0.31, -Hh * 0.12, w.r * 0.07, 0, Math.PI * 2);
+    ctx.moveTo(0, 0);
+    ctx.bezierCurveTo(-L * 0.14, -Hh * 0.24, -L * 0.30, -Hh * 0.10, -L * 0.36, -Hh * 0.04);
+    ctx.bezierCurveTo(-L * 0.28, Hh * 0.02, -L * 0.18, Hh * 0.00, -L * 0.10, Hh * 0.06);
+    ctx.bezierCurveTo(-L * 0.18, Hh * 0.12, -L * 0.28, Hh * 0.22, -L * 0.34, Hh * 0.16);
+    ctx.bezierCurveTo(-L * 0.26, Hh * 0.04, -L * 0.16, Hh * 0.02, 0, 0);
+    ctx.closePath();
     ctx.fill();
-  
-    // Smile
-    ctx.strokeStyle = detail;
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.arc(L * 0.30, Hh * 0.05, w.r * 0.45, Math.PI * 1.15, Math.PI * 1.45);
-    ctx.stroke();
-  
+
+    ctx.restore();
+
     // Blowhole + spray when near surface
-    const globalY = y; // current y in world
-    if (globalY < waterline + 35) {
-      // blowhole
+    if (w.y < waterline + 35) {
       ctx.beginPath();
       ctx.strokeStyle = "rgba(255,255,255,0.35)";
       ctx.lineWidth = 2;
-      ctx.arc(L * 0.10, -Hh * 0.33, w.r * 0.18, Math.PI * 1.1, Math.PI * 1.9);
+      ctx.arc(L * 0.12, -Hh * 0.34, w.r * 0.18, Math.PI * 1.1, Math.PI * 1.9);
       ctx.stroke();
-  
-      // spray (tiny arcs)
+
       ctx.strokeStyle = "rgba(255,255,255,0.28)";
-      ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.arc(L * 0.10, -Hh * 0.55, w.r * 0.6, Math.PI * 1.15, Math.PI * 1.85);
+      ctx.arc(L * 0.12, -Hh * 0.56, w.r * 0.60, Math.PI * 1.15, Math.PI * 1.85);
       ctx.stroke();
     }
 
     ctx.restore();
   }
-  
+
   function drawFish(f) {
     ctx.beginPath();
     ctx.fillStyle = "#ffd166"; // golden fish;
@@ -375,7 +402,7 @@
     // Buoyancy in water: pulls whale toward a comfortable float depth
     if (inWater) {
       const targetY = waterline + floatDepth;
-      const buoy = (targetY - whale.y) * buoyancyStrength; // if whale is below target, buoy is negative (upward)
+      const buoy = (targetY - whale.y) * buoyancyStrength;
       whale.vy += buoy;
 
       // Apply swim vertical input in water
@@ -401,6 +428,14 @@
     if (whale.y >= waterline + 3 && whale.vy > 2.5 && Math.random() < 0.25) {
       splash(whale.x, waterline + 2, 8);
     }
+
+    // Visual swim animation
+    const speed = Math.hypot(whale.vx, whale.vy);
+    if (inWater) whale.phase += 0.12 + speed * 0.02;
+    else whale.phase += 0.03;
+
+    const targetPitch = clamp(whale.vy * 0.03, -0.35, 0.35);
+    whale.pitch += (targetPitch - whale.pitch) * 0.12;
   }
 
   function updateBaby() {
@@ -433,6 +468,14 @@
 
     baby.x = clamp(baby.x, baby.r * 1.8, W - baby.r * 1.8);
     baby.y = clamp(baby.y, baby.r * 1.1, H - baby.r * 1.2);
+
+    // Visual swim animation for baby
+    const speedB = Math.hypot(baby.vx, baby.vy);
+    if (inWater) baby.phase += 0.12 + speedB * 0.02;
+    else baby.phase += 0.03;
+
+    const targetPitchB = clamp(baby.vy * 0.03, -0.35, 0.35);
+    baby.pitch += (targetPitchB - baby.pitch) * 0.12;
   }
 
   function updateFish() {
