@@ -168,18 +168,27 @@
   }
 
   function drawFish(f) {
+    ctx.save();
+    ctx.translate(f.x, f.y);
+  
+    // Flip fish if moving left
+    if (f.vx < 0) ctx.scale(-1, 1);
+  
     ctx.beginPath();
     ctx.fillStyle = "#ffd166";
-    ctx.ellipse(f.x, f.y, f.r * 1.1, f.r * 0.7, 0, 0, Math.PI * 2);
+    ctx.ellipse(0, 0, f.r * 1.1, f.r * 0.7, 0, 0, Math.PI * 2);
     ctx.fill();
-
+  
+    // Tail (always drawn pointing backward)
     ctx.beginPath();
     ctx.fillStyle = "#f4a261";
-    ctx.moveTo(f.x - f.r * 1.1, f.y);
-    ctx.lineTo(f.x - f.r * 1.6, f.y - f.r * 0.55);
-    ctx.lineTo(f.x - f.r * 1.6, f.y + f.r * 0.55);
+    ctx.moveTo(-f.r * 1.1, 0);
+    ctx.lineTo(-f.r * 1.6, -f.r * 0.55);
+    ctx.lineTo(-f.r * 1.6, f.r * 0.55);
     ctx.closePath();
     ctx.fill();
+  
+    ctx.restore();
   }
 
   function drawBubbles() {
