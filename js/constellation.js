@@ -5,6 +5,18 @@
   const modalExtra = document.getElementById("modalExtra");
   const closeBtn = document.getElementById("closeBtn");
 
+  function rainSesame(){
+    for (let i = 0; i < 90; i++){
+      const seed = document.createElement("div");
+      seed.className = "sesame-seed";
+      seed.style.left = (Math.random() * 100) + "vw";
+      seed.style.animationDuration = (2 + Math.random() * 2.5) + "s";
+      seed.style.opacity = (0.4 + Math.random() * 0.6);
+      document.body.appendChild(seed);
+      setTimeout(() => seed.remove(), 5200);
+    }
+  }
+  
   function openModal(title, body, extraHtml = "") {
     modalTitle.textContent = title;
     modalBody.textContent = body;
@@ -65,30 +77,7 @@ For your softness and your fire.`
     },
   };
 
-  document.querySelectorAll("[data-open]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const key = btn.getAttribute("data-open");
-      const item = items[key];
-      if (!item) return;
-      openModal(item.title, item.body, item.extra || "");
-    });
-  });
-
-  // Secret: clicking empty space 5 times unlocks an Arabic message
-  let secretCount = 0;
-  const space = document.querySelector(".space-inner");
-  space.addEventListener("click", (e) => {
-    // only count clicks on empty background, not on words
-    if (e.target.closest(".float-word")) return;
-    secretCount += 1;
-    if (secretCount === 5) {
-      openModal("Secret", "بحبك كتير. \n\nThis is your world.");
-    }
-  });
-})();
-
-
-photos: {
+  photos: {
   title: "Photos",
   body: "A few moments I keep.",
   extra: `
@@ -115,14 +104,30 @@ photos: {
   `
 },
 
-function rainSesame(){
-  for(let i = 0; i < 90; i++){
-    const seed = document.createElement("div");
-    seed.className = "sesame-seed";
-    seed.style.left = (Math.random() * 100) + "vw";
-    seed.style.animationDuration = (2 + Math.random() * 2.5) + "s";
-    seed.style.opacity = (0.4 + Math.random() * 0.6);
-    document.body.appendChild(seed);
-    setTimeout(() => seed.remove(), 5200);
-  }
-}
+
+  document.querySelectorAll("[data-open]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const key = btn.getAttribute("data-open");
+  
+      if (key === "sesame") {
+        rainSesame();
+      }
+  
+      const item = items[key];
+      if (!item) return;
+      openModal(item.title, item.body, item.extra || "");
+    });
+  });
+
+  // Secret: clicking empty space 5 times unlocks an Arabic message
+  let secretCount = 0;
+  const space = document.querySelector(".space-inner");
+  space.addEventListener("click", (e) => {
+    // only count clicks on empty background, not on words
+    if (e.target.closest(".float-word")) return;
+    secretCount += 1;
+    if (secretCount === 5) {
+      openModal("Secret", "بحبك كتير. \n\nThis is your world.");
+    }
+  });
+})();
