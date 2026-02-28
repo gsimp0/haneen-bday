@@ -198,124 +198,118 @@
   // More realistic silhouette + whale-like motion (body flex + tail beat + pitch)
   function drawWhaleBody(w, facing) {
     const f = facing ?? 1;
-
-    const body = "#0f2f4f";
-    const belly = "rgba(255,255,255,0.10)";
-    const shadow = "rgba(0,0,0,0.08)";
-
-    const L = w.r * 3.3; // length
-    const Hh = w.r * 1.45; // height
-
+  
+    const L = w.r * 4.2;   // longer body
+    const H = w.r * 1.6;
+  
     const phase = w.phase || 0;
     const pitch = w.pitch || 0;
     const speed = Math.hypot(w.vx || 0, w.vy || 0);
-
-    // Tail wag increases with speed, but stays subtle
-    const tailWag = Math.sin(phase) * (0.18 + Math.min(0.22, speed * 0.03));
-
-    // Gentle body flex so it feels alive
-    const flexA = Math.sin(phase * 0.7) * (Hh * 0.10);
-    const flexB = Math.sin(phase * 0.7 + 1.6) * (Hh * 0.08);
-
+  
+    const tailAngle = Math.sin(phase) * (0.15 + Math.min(0.2, speed * 0.03));
+  
     ctx.save();
     ctx.translate(w.x, w.y);
     ctx.scale(f, 1);
     ctx.rotate(pitch);
-
-    // Soft shadow
+  
+    // === BODY ===
     ctx.beginPath();
-    ctx.fillStyle = shadow;
-    ctx.ellipse(0, 8, L * 0.44, Hh * 0.40, 0, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Body silhouette
-    ctx.beginPath();
-    ctx.fillStyle = body;
-
-    // Top line: tail base to head
-    ctx.moveTo(-L * 0.28, -Hh * 0.18 + flexB);
-    ctx.bezierCurveTo(-L * 0.05, -Hh * 0.60 + flexA, L * 0.28, -Hh * 0.55, L * 0.52, -Hh * 0.10);
-
-    // Head and snout down
-    ctx.bezierCurveTo(L * 0.62, 0, L * 0.56, Hh * 0.22, L * 0.42, Hh * 0.24);
-
-    // Belly back toward tail
-    ctx.bezierCurveTo(L * 0.18, Hh * 0.50, -L * 0.18, Hh * 0.42, -L * 0.34, Hh * 0.14);
-
-    // Tail notch back up
-    ctx.quadraticCurveTo(-L * 0.38, 0, -L * 0.28, -Hh * 0.18 + flexB);
+    ctx.fillStyle = "#2e5fd6";
+  
+    ctx.moveTo(-L * 0.35, -H * 0.15);
+  
+    // back curve
+    ctx.bezierCurveTo(
+      -L * 0.1, -H * 0.65,
+       L * 0.35, -H * 0.55,
+       L * 0.55, -H * 0.15
+    );
+  
+    // head / snout
+    ctx.bezierCurveTo(
+       L * 0.7, 0,
+       L * 0.6,  H * 0.25,
+       L * 0.45, H * 0.25
+    );
+  
+    // belly curve
+    ctx.bezierCurveTo(
+       L * 0.15, H * 0.55,
+      -L * 0.2, H * 0.45,
+      -L * 0.4, H * 0.1
+    );
+  
+    ctx.quadraticCurveTo(-L * 0.45, 0, -L * 0.35, -H * 0.15);
     ctx.closePath();
     ctx.fill();
-
-    // Dorsal fin (subtle)
-    ctx.beginPath();
-    ctx.fillStyle = body;
-    ctx.moveTo(L * 0.02, -Hh * 0.30);
-    ctx.quadraticCurveTo(L * 0.10, -Hh * 0.62, L * 0.18, -Hh * 0.28);
-    ctx.quadraticCurveTo(L * 0.10, -Hh * 0.22, L * 0.02, -Hh * 0.30);
-    ctx.fill();
-
-    // Belly highlight
-    ctx.beginPath();
-    ctx.fillStyle = belly;
-    ctx.ellipse(L * 0.10, Hh * 0.18, L * 0.33, Hh * 0.26, 0.12, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Eye
-    ctx.beginPath();
-    ctx.fillStyle = "rgba(255,255,255,0.9)";
-    ctx.arc(L * 0.42, -Hh * 0.05, Math.max(2, w.r * 0.12), 0, Math.PI * 2);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.fillStyle = "rgba(0,0,0,0.55)";
-    ctx.arc(L * 0.45, -Hh * 0.05, Math.max(1.2, w.r * 0.06), 0, Math.PI * 2);
-    ctx.fill();
-
-    // Pectoral fin (tiny flap)
-    const finFlap = Math.sin(phase * 0.9 + 0.8) * 0.15;
-    ctx.save();
-    ctx.translate(L * 0.20, Hh * 0.12);
-    ctx.rotate(finFlap);
-    ctx.beginPath();
-    ctx.fillStyle = "rgba(0,0,0,0.12)";
-    ctx.moveTo(0, 0);
-    ctx.quadraticCurveTo(L * 0.12, Hh * 0.18, -L * 0.02, Hh * 0.32);
-    ctx.quadraticCurveTo(-L * 0.06, Hh * 0.18, 0, 0);
-    ctx.closePath();
-    ctx.fill();
-    ctx.restore();
-
-    // Tail flukes (rotate around tail base for realistic swimming)
-    ctx.save();
-    ctx.translate(-L * 0.34, 0);
-    ctx.rotate(tailWag);
-
-    ctx.beginPath();
-    ctx.fillStyle = body;
-    ctx.moveTo(0, 0);
-    ctx.bezierCurveTo(-L * 0.14, -Hh * 0.24, -L * 0.30, -Hh * 0.10, -L * 0.36, -Hh * 0.04);
-    ctx.bezierCurveTo(-L * 0.28, Hh * 0.02, -L * 0.18, Hh * 0.00, -L * 0.10, Hh * 0.06);
-    ctx.bezierCurveTo(-L * 0.18, Hh * 0.12, -L * 0.28, Hh * 0.22, -L * 0.34, Hh * 0.16);
-    ctx.bezierCurveTo(-L * 0.26, Hh * 0.04, -L * 0.16, Hh * 0.02, 0, 0);
-    ctx.closePath();
-    ctx.fill();
-
-    ctx.restore();
-
-    // Blowhole + spray when near surface
-    if (w.y < waterline + 35) {
+  
+    // === BELLY GROOVES ===
+    ctx.strokeStyle = "rgba(255,255,255,0.4)";
+    ctx.lineWidth = 1.5;
+  
+    for (let i = 0; i < 6; i++) {
+      const offset = i * (H * 0.06);
       ctx.beginPath();
-      ctx.strokeStyle = "rgba(255,255,255,0.35)";
-      ctx.lineWidth = 2;
-      ctx.arc(L * 0.12, -Hh * 0.34, w.r * 0.18, Math.PI * 1.1, Math.PI * 1.9);
-      ctx.stroke();
-
-      ctx.strokeStyle = "rgba(255,255,255,0.28)";
-      ctx.beginPath();
-      ctx.arc(L * 0.12, -Hh * 0.56, w.r * 0.60, Math.PI * 1.15, Math.PI * 1.85);
+      ctx.moveTo(L * 0.15, H * 0.05 + offset);
+      ctx.quadraticCurveTo(
+        L * 0.35,
+        H * 0.2 + offset,
+        L * 0.5,
+        H * 0.15 + offset
+      );
       ctx.stroke();
     }
-
+  
+    // === DORSAL FIN ===
+    ctx.beginPath();
+    ctx.fillStyle = "#274fc0";
+    ctx.moveTo(L * 0.05, -H * 0.25);
+    ctx.quadraticCurveTo(L * 0.1, -H * 0.55, L * 0.18, -H * 0.28);
+    ctx.closePath();
+    ctx.fill();
+  
+    // === PECTORAL FIN ===
+    ctx.beginPath();
+    ctx.fillStyle = "#274fc0";
+    ctx.moveTo(L * 0.15, H * 0.1);
+    ctx.quadraticCurveTo(L * 0.05, H * 0.45, L * 0.28, H * 0.3);
+    ctx.closePath();
+    ctx.fill();
+  
+    // === TAIL FLUKES ===
+    ctx.save();
+    ctx.translate(-L * 0.42, 0);
+    ctx.rotate(tailAngle);
+  
+    ctx.beginPath();
+    ctx.fillStyle = "#274fc0";
+  
+    // upper fluke
+    ctx.moveTo(0, 0);
+    ctx.bezierCurveTo(
+      -L * 0.12, -H * 0.25,
+      -L * 0.28, -H * 0.2,
+      -L * 0.32, -H * 0.05
+    );
+  
+    // lower fluke
+    ctx.bezierCurveTo(
+      -L * 0.28, H * 0.15,
+      -L * 0.12, H * 0.25,
+      0, 0
+    );
+  
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  
+    // === EYE ===
+    ctx.beginPath();
+    ctx.fillStyle = "#111";
+    ctx.arc(L * 0.5, -H * 0.05, w.r * 0.12, 0, Math.PI * 2);
+    ctx.fill();
+  
     ctx.restore();
   }
 
