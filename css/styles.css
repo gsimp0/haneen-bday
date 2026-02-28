@@ -146,10 +146,7 @@ p{
 /* ---------- Floating constellation home ---------- */
 .space{
   min-height: calc(100vh - 78px);
-  background:
-    radial-gradient(1200px 600px at 20% 20%, rgba(122,78,45,0.10), transparent 60%),
-    radial-gradient(900px 500px at 80% 30%, rgba(31,31,31,0.06), transparent 55%),
-    linear-gradient(#fbfaf8, #fbfaf8);
+  background: #ffffff;
 }
 
 .space-inner{
