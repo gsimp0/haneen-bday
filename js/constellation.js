@@ -114,3 +114,20 @@ photos: {
     </div>
   `
 },
+
+function rainSesame(){
+  for(let i = 0; i < 80; i++){
+    const seed = document.createElement("div");
+    seed.className = "sesame-seed";
+
+    seed.style.left = Math.random() * 100 + "vw";
+    seed.style.animationDuration = (2 + Math.random() * 2) + "s";
+    seed.style.opacity = Math.random();
+
+    document.body.appendChild(seed);
+
+    setTimeout(() => {
+      seed.remove();
+    }, 4000);
+  }
+}
