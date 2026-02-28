@@ -11,7 +11,7 @@
   const waterline = Math.floor(H * 0.62);
 
   const gravity = 0.55;
-  const airDrag = 0.985;
+  const airDrag = 0.95;
   const waterDrag = 0.93;
 
   const swimAccelX = 0.55;
@@ -215,7 +215,7 @@
     const isBaby = entity.r <= 18;
 
     // scale relative to hit radius
-    const s = (entity.r / 26) * 0.37;
+    const s = (entity.r / 26) * 0.30;
 
     // gentle swim flex
     const flex = Math.sin(entity.phase) * 0.08;
@@ -224,7 +224,6 @@
     const BODY = "#6990ba";
     const OUTLINE = "#456685";
     const BELLY = "#87aad1";
-    const SPOUT = "#d8e5ec";
     const DARK = "#476379";
     const EYE = "#2b2b2b";
 
@@ -323,21 +322,7 @@
     ctx.lineWidth = 4;
     ctx.stroke();
 
-    // SPOUT (only for main whale, optional)
-    if (!isBaby) {
-      ctx.fillStyle = SPOUT;
-      ctx.beginPath();
-      ctx.ellipse(-130, -60, 8, 18, 0, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.beginPath();
-      ctx.ellipse(-150, -70, 6, 14, -0.3, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.beginPath();
-      ctx.ellipse(-110, -70, 6, 14, 0.3, 0, Math.PI * 2);
-      ctx.fill();
-    }
+    
 
     ctx.restore();
   }
@@ -367,8 +352,8 @@
     if (inWater && nearSurface) whale.jumpReady = true;
 
     if (keys.has("space") && whale.jumpReady && inWater && nearSurface) {
-      whale.vy = -12.0;
-      whale.vx += whale.facing * 1.2;
+      whale.vy = -7.5;                 // was -12.0
+      whale.vx += whale.facing * 0.25; // was ~1.2
       whale.jumpReady = false;
       splash(whale.x, waterline + 2, 18);
     }
