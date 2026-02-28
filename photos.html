@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Photos</title>
+  <link rel="stylesheet" href="css/styles.css?v=1" />
+  <link href="https://fonts.googleapis.com/css2?family=TeX+Gyre+Termes:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a href="photos.html" aria-current="page">Photos</a>
+  </nav>
+
+  <main class="container">
+    <h1 class="page-title">Photos</h1>
+
+    <section class="gallery" aria-label="Photo gallery">
+      <button class="gallery-item" type="button">
+        <img src="assets/photos/photo1.jpg" alt="Photo 1" loading="lazy">
+      </button>
+
+      <button class="gallery-item" type="button">
+        <img src="assets/photos/photo2.jpg" alt="Photo 2" loading="lazy">
+      </button>
+
+      <button class="gallery-item" type="button">
+        <img src="assets/photos/photo3.jpg" alt="Photo 3" loading="lazy">
+      </button>
+
+      <!-- Add more items -->
+    </section>
+  </main>
+
+  <!-- Lightbox -->
+  <div class="lightbox" hidden>
+    <button class="lightbox-close" type="button" aria-label="Close">✕</button>
+    <img class="lightbox-img" alt="">
+  </div>
+
+  <script>
+    const lightbox = document.querySelector('.lightbox');
+    const lightboxImg = document.querySelector('.lightbox-img');
+    const closeBtn = document.querySelector('.lightbox-close');
+
+    document.querySelectorAll('.gallery-item img').forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt || 'Photo';
+        lightbox.hidden = false;
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    function closeLightbox() {
+      lightbox.hidden = true;
+      lightboxImg.src = '';
+      document.body.style.overflow = '';
+    }
+
+    closeBtn.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !lightbox.hidden) closeLightbox();
+    });
+  </script>
+
+</body>
+</html>
