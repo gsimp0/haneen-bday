@@ -35,9 +35,8 @@
     }
 
     .photo-wrap{
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 28px 24px 80px;
+      width: 100%;
+      padding: 60px 90px 140px;
     }
 
     .photo-head{
@@ -45,7 +44,7 @@
       align-items:flex-end;
       justify-content:space-between;
       gap: 16px;
-      margin: 6px 0 22px;
+      margin: 20px 0 60px;
     }
 
     .photo-title{
@@ -67,7 +66,8 @@
     .spread{
       display:grid;
       grid-template-columns: repeat(12, 1fr);
-      gap: 28px;
+      column-gap: 48px;
+      row-gap: 60px;
       align-items:start;
     }
 
@@ -76,6 +76,7 @@
       cursor:pointer;
       user-select:none;
       transition: transform 160ms ease, opacity 160ms ease;
+      max-width: 100%;
     }
 
     figure.shot:hover{
