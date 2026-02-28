@@ -215,7 +215,7 @@
     const isBaby = entity.r <= 18;
 
     // scale relative to hit radius
-    const s = (entity.r / 26) * 0.45;
+    const s = (entity.r / 26) * 0.37;
 
     // gentle swim flex
     const flex = Math.sin(entity.phase) * 0.08;
@@ -230,7 +230,7 @@
 
     ctx.save();
     ctx.translate(x, y);
-    ctx.scale(facing * s, s);
+    ctx.scale(-facing * s, s);
     ctx.rotate(pitch);
 
     ctx.lineWidth = 6;
