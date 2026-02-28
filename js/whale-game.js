@@ -7,7 +7,6 @@
 
   const W = canvas.width;
   const H = canvas.height;
-
   const waterline = Math.floor(H * 0.62);
 
   const gravity = 0.55;
@@ -83,27 +82,41 @@
     return Math.max(a, Math.min(b, v));
   }
 
-  function spawnFish(n = 6) {
+  function spawnFish(n = 20) {
     fish.length = 0;
     for (let i = 0; i < n; i++) {
+      const dir = Math.random() < 0.5 ? -1 : 1; // left or right
       fish.push({
-        x: rand(W * 0.35, W * 0.95),
-        y: rand(waterline + 35, H - 30),
-        r: rand(2.2, 3.8),
-        vx: dir * rand(0.25, 0.75),
+        x: dir === -1 ? rand(W * 0.35, W * 0.98) : rand(W * 0.02, W * 0.65),
+        y: rand(waterline + 30, H - 25),
+        r: rand(2.2, 3.8),          // krill size
+        vx: dir * rand(0.25, 0.75), // drift speed
       });
     }
   }
 
-  function splash(x, y, count = 14) {
+  function splash(x, y, count = 10) {
     for (let i = 0; i < count; i++) {
       bubbles.push({
         x,
         y,
-        vx: rand(-1.8, 1.8),
-        vy: rand(-3.0, -0.9),
-        life: rand(20, 45),
-        r: rand(2, 5),
+        vx: rand(-1.2, 1.2),
+        vy: rand(-2.4, -0.7),
+        life: rand(16, 34),
+        r: rand(1.5, 3.2),
+      });
+    }
+  }
+
+  function nibbleBubbles(x, y, count = 26) {
+    for (let i = 0; i < count; i++) {
+      bubbles.push({
+        x: x + rand(-10, 10),
+        y: y + rand(-8, 8),
+        vx: rand(-0.25, 0.25),
+        vy: rand(-1.25, -0.45),
+        life: rand(26, 56),
+        r: rand(0.8, 1.6),
       });
     }
   }
@@ -129,7 +142,7 @@
     baby.pitch = 0;
 
     bubbles.length = 0;
-    spawnFish(6);
+    spawnFish(20);
   }
 
   function toggleBaby() {
@@ -170,26 +183,26 @@
   function drawFish(f) {
     ctx.save();
     ctx.translate(f.x, f.y);
-  
+
     // face travel direction
     if (f.vx < 0) ctx.scale(-1, 1);
-  
+
     // krill body
     ctx.fillStyle = "rgba(255, 210, 170, 0.9)";
     ctx.beginPath();
     ctx.ellipse(0, 0, f.r * 1.6, f.r * 0.7, 0, 0, Math.PI * 2);
     ctx.fill();
-  
+
     // tiny tail flick
     ctx.strokeStyle = "rgba(255, 190, 150, 0.85)";
-    ctx.lineWidth = 1.5;
+    ctx.lineWidth = 1.3;
     ctx.beginPath();
     ctx.moveTo(-f.r * 1.4, 0);
     ctx.lineTo(-f.r * 2.2, -f.r * 0.7);
     ctx.moveTo(-f.r * 1.4, 0);
     ctx.lineTo(-f.r * 2.2, f.r * 0.7);
     ctx.stroke();
-  
+
     ctx.restore();
   }
 
@@ -205,7 +218,7 @@
   function drawUI() {
     ctx.fillStyle = "rgba(27,42,65,0.92)";
     ctx.font = "16px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial";
-    ctx.fillText(`Fish: ${score}`, 18, 28);
+    ctx.fillText(`Krill: ${score}`, 18, 28);
     ctx.fillText(`Best: ${Math.max(best, score)}`, 18, 50);
 
     ctx.fillStyle = "rgba(27,42,65,0.65)";
@@ -219,19 +232,17 @@
     return dx * dx + dy * dy <= rr;
   }
 
-  // Your artwork-style whale (tail: flatter + wider + shorter; smoother tail root; PNG-matched palette)
   function drawWhaleBody(entity, facing) {
     const x = entity.x;
     const y = entity.y;
-    const isBaby = entity.r <= 18;
 
-    // scale relative to hit radius
+    // smaller whale scale
     const s = (entity.r / 26) * 0.30;
 
-    // gentle swim flex
     const flex = Math.sin(entity.phase) * 0.08;
     const pitch = entity.pitch;
 
+    // matched palette
     const BODY = "#6990ba";
     const OUTLINE = "#456685";
     const BELLY = "#87aad1";
@@ -247,13 +258,13 @@
     ctx.lineJoin = "round";
     ctx.lineCap = "round";
 
-    // BODY (extra-soft transition into tail root)
+    // BODY
     ctx.beginPath();
     ctx.moveTo(-220, 20);
     ctx.quadraticCurveTo(-160, -40, 80, -20);
     ctx.quadraticCurveTo(190, -12, 235, -22);
-    ctx.quadraticCurveTo(255, -26, 272, -18);  // softened top root
-    ctx.quadraticCurveTo(255, 18, 235, 24);    // softened bottom root
+    ctx.quadraticCurveTo(255, -26, 272, -18);
+    ctx.quadraticCurveTo(255, 18, 235, 24);
     ctx.quadraticCurveTo(190, 48, 80, 60);
     ctx.quadraticCurveTo(-140, 80, -220, 20);
     ctx.closePath();
@@ -262,7 +273,7 @@
     ctx.strokeStyle = OUTLINE;
     ctx.stroke();
 
-    // BELLY PATCH
+    // BELLY
     ctx.beginPath();
     ctx.moveTo(-200, 30);
     ctx.quadraticCurveTo(-60, 110, 120, 40);
@@ -281,7 +292,7 @@
     ctx.strokeStyle = OUTLINE;
     ctx.stroke();
 
-    // SMALL DORSAL FIN
+    // DORSAL FIN
     ctx.beginPath();
     ctx.moveTo(120, -20);
     ctx.quadraticCurveTo(136, -44, 156, -25);
@@ -290,8 +301,7 @@
     ctx.fill();
     ctx.stroke();
 
-    // TAIL FLUKE (wider + flatter + reduced height)
-    // Tail beat is subtle: only tail rotates a bit via flex
+    // TAIL (wide + flat)
     ctx.save();
     ctx.translate(260, -2);
     ctx.rotate(flex);
@@ -299,20 +309,11 @@
 
     ctx.beginPath();
     ctx.moveTo(250, -14);
-
-    // upper lobe (very flat)
     ctx.quadraticCurveTo(305, -40, 378, -24);
-
-    // center notch
     ctx.quadraticCurveTo(344, -6, 310, -8);
-
-    // lower lobe (very flat)
     ctx.quadraticCurveTo(344, 8, 378, 28);
-
-    // return
     ctx.quadraticCurveTo(305, 22, 250, 8);
     ctx.closePath();
-
     ctx.fillStyle = BODY;
     ctx.fill();
     ctx.strokeStyle = OUTLINE;
@@ -332,8 +333,6 @@
     ctx.strokeStyle = DARK;
     ctx.lineWidth = 4;
     ctx.stroke();
-
-    
 
     ctx.restore();
   }
@@ -363,10 +362,10 @@
     if (inWater && nearSurface) whale.jumpReady = true;
 
     if (keys.has("space") && whale.jumpReady && inWater && nearSurface) {
-      whale.vy = -7.5;                 // was -12.0
-      whale.vx += whale.facing * 0.25; // was ~1.2
+      whale.vy = -7.5;
+      whale.vx += whale.facing * 0.25;
       whale.jumpReady = false;
-      splash(whale.x, waterline + 2, 18);
+      splash(whale.x, waterline + 2, 12);
     }
 
     whale.vx += ax;
@@ -383,15 +382,13 @@
     whale.vx *= drag;
     whale.vy *= drag;
 
+    if (whale.y < waterline) whale.vx *= 0.92;
+
     whale.x += whale.vx;
     whale.y += whale.vy;
 
     whale.x = clamp(whale.x, whale.r * 1.8, W - whale.r * 1.8);
     whale.y = clamp(whale.y, whale.r * 1.1, H - whale.r * 1.2);
-
-    if (whale.y >= waterline + 3 && whale.vy > 2.5 && Math.random() < 0.25) {
-      splash(whale.x, waterline + 2, 8);
-    }
 
     const speed = Math.hypot(whale.vx, whale.vy);
     if (inWater) whale.phase += 0.12 + speed * 0.02;
@@ -442,10 +439,15 @@
   function updateFish() {
     for (const f of fish) {
       f.x += f.vx;
-      if (f.x < -30) {
+
+      if (f.vx < 0 && f.x < -30) {
         f.x = W + rand(20, 140);
-        f.y = rand(waterline + 35, H - 30);
-        f.vx = rand(-1.3, -0.5);
+        f.y = rand(waterline + 30, H - 25);
+        f.vx = -rand(0.25, 0.75);
+      } else if (f.vx > 0 && f.x > W + 30) {
+        f.x = -rand(20, 140);
+        f.y = rand(waterline + 30, H - 25);
+        f.vx = rand(0.25, 0.75);
       }
     }
 
@@ -456,10 +458,15 @@
 
       if (hitWhale || hitBaby) {
         score += 1;
-        splash(f.x, f.y, hitBaby ? 8 : 10);
-        f.x = W + rand(30, 160);
-        f.y = rand(waterline + 35, H - 30);
-        f.vx = rand(-1.3, -0.5);
+        nibbleBubbles(f.x, f.y, 26);
+        splash(f.x, f.y, 6);
+
+        // respawn same fish on a random side
+        const dir = Math.random() < 0.5 ? -1 : 1;
+        f.x = dir === -1 ? W + rand(30, 180) : -rand(30, 180);
+        f.y = rand(waterline + 30, H - 25);
+        f.vx = dir * rand(0.25, 0.75);
+        f.r = rand(2.2, 3.8);
       }
     }
   }
@@ -469,7 +476,7 @@
       const b = bubbles[i];
       b.x += b.vx;
       b.y += b.vy;
-      b.vy += 0.06;
+      b.vy += 0.04; // gentle
       b.life -= 1;
       if (b.life <= 0) bubbles.splice(i, 1);
     }
@@ -493,6 +500,6 @@
     requestAnimationFrame(frame);
   }
 
-  spawnFish(6);
+  spawnFish(20);
   frame();
 })();
