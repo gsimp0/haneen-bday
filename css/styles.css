@@ -327,3 +327,23 @@ p{
   cursor: pointer;
   font-size: 18px;
 }
+
+/* Sesame rain */
+.sesame-seed{
+  position: fixed;
+  top: -20px;
+  width: 6px;
+  height: 10px;
+  background: #e8d9a8;
+  border-radius: 50% / 60%;
+  pointer-events: none;
+  z-index: 9999;
+  animation: sesameFall linear forwards;
+}
+
+@keyframes sesameFall{
+  to{
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0.8;
+  }
+}
