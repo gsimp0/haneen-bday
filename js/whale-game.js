@@ -199,120 +199,121 @@
   function drawWhaleBody(w, facing) {
     const f = facing ?? 1;
   
-    const L = w.r * 4.2;   // longer body
-    const H = w.r * 1.6;
+    const L = w.r * 5.2;   // MUCH longer
+    const H = w.r * 1.8;
   
     const phase = w.phase || 0;
     const pitch = w.pitch || 0;
     const speed = Math.hypot(w.vx || 0, w.vy || 0);
   
-    const tailAngle = Math.sin(phase) * (0.15 + Math.min(0.2, speed * 0.03));
+    const tailAngle = Math.sin(phase) * (0.12 + Math.min(0.18, speed * 0.03));
   
     ctx.save();
     ctx.translate(w.x, w.y);
     ctx.scale(f, 1);
     ctx.rotate(pitch);
   
-    // === BODY ===
+    // ================= BODY =================
     ctx.beginPath();
     ctx.fillStyle = "#2e5fd6";
   
-    ctx.moveTo(-L * 0.35, -H * 0.15);
+    ctx.moveTo(-L * 0.38, -H * 0.12);
   
-    // back curve
+    // long arched back
     ctx.bezierCurveTo(
-      -L * 0.1, -H * 0.65,
-       L * 0.35, -H * 0.55,
-       L * 0.55, -H * 0.15
+      -L * 0.1, -H * 0.75,
+       L * 0.35, -H * 0.65,
+       L * 0.65, -H * 0.15
     );
   
-    // head / snout
+    // tapered snout
     ctx.bezierCurveTo(
-       L * 0.7, 0,
-       L * 0.6,  H * 0.25,
-       L * 0.45, H * 0.25
+       L * 0.8, -H * 0.05,
+       L * 0.75,  H * 0.15,
+       L * 0.55,  H * 0.18
     );
   
-    // belly curve
+    // rounded belly
     ctx.bezierCurveTo(
-       L * 0.15, H * 0.55,
-      -L * 0.2, H * 0.45,
-      -L * 0.4, H * 0.1
+       L * 0.2, H * 0.65,
+      -L * 0.25, H * 0.55,
+      -L * 0.45, H * 0.1
     );
   
-    ctx.quadraticCurveTo(-L * 0.45, 0, -L * 0.35, -H * 0.15);
+    ctx.quadraticCurveTo(-L * 0.48, 0, -L * 0.38, -H * 0.12);
     ctx.closePath();
     ctx.fill();
   
-    // === BELLY GROOVES ===
-    ctx.strokeStyle = "rgba(255,255,255,0.4)";
-    ctx.lineWidth = 1.5;
+    // ================= BELLY STRIPES =================
+    ctx.strokeStyle = "rgba(255,255,255,0.45)";
+    ctx.lineWidth = 1.6;
   
-    for (let i = 0; i < 6; i++) {
-      const offset = i * (H * 0.06);
+    for (let i = 0; i < 7; i++) {
+      const offset = i * (H * 0.07);
       ctx.beginPath();
       ctx.moveTo(L * 0.15, H * 0.05 + offset);
       ctx.quadraticCurveTo(
-        L * 0.35,
-        H * 0.2 + offset,
-        L * 0.5,
-        H * 0.15 + offset
+        L * 0.4,
+        H * 0.3 + offset,
+        L * 0.6,
+        H * 0.2 + offset
       );
       ctx.stroke();
     }
   
-    // === DORSAL FIN ===
+    // ================= DORSAL FIN =================
     ctx.beginPath();
     ctx.fillStyle = "#274fc0";
-    ctx.moveTo(L * 0.05, -H * 0.25);
-    ctx.quadraticCurveTo(L * 0.1, -H * 0.55, L * 0.18, -H * 0.28);
+    ctx.moveTo(L * 0.05, -H * 0.3);
+    ctx.quadraticCurveTo(L * 0.12, -H * 0.75, L * 0.25, -H * 0.35);
     ctx.closePath();
     ctx.fill();
   
-    // === PECTORAL FIN ===
+    // ================= LARGE PECTORAL FIN =================
     ctx.beginPath();
     ctx.fillStyle = "#274fc0";
-    ctx.moveTo(L * 0.15, H * 0.1);
-    ctx.quadraticCurveTo(L * 0.05, H * 0.45, L * 0.28, H * 0.3);
+    ctx.moveTo(L * 0.2, H * 0.15);
+    ctx.quadraticCurveTo(L * 0.05, H * 0.7, L * 0.35, H * 0.4);
     ctx.closePath();
     ctx.fill();
   
-    // === TAIL FLUKES ===
+    // ================= BIG FLUKES =================
     ctx.save();
-    ctx.translate(-L * 0.42, 0);
+    ctx.translate(-L * 0.5, 0);
     ctx.rotate(tailAngle);
   
     ctx.beginPath();
     ctx.fillStyle = "#274fc0";
   
-    // upper fluke
     ctx.moveTo(0, 0);
+  
     ctx.bezierCurveTo(
-      -L * 0.12, -H * 0.25,
-      -L * 0.28, -H * 0.2,
-      -L * 0.32, -H * 0.05
+      -L * 0.2, -H * 0.4,
+      -L * 0.45, -H * 0.35,
+      -L * 0.55, -H * 0.05
     );
   
-    // lower fluke
     ctx.bezierCurveTo(
-      -L * 0.28, H * 0.15,
-      -L * 0.12, H * 0.25,
+      -L * 0.45, H * 0.25,
+      -L * 0.2, H * 0.4,
       0, 0
     );
   
     ctx.closePath();
     ctx.fill();
+  
     ctx.restore();
   
-    // === EYE ===
+    // ================= EYE =================
     ctx.beginPath();
     ctx.fillStyle = "#111";
-    ctx.arc(L * 0.5, -H * 0.05, w.r * 0.12, 0, Math.PI * 2);
+    ctx.arc(L * 0.65, -H * 0.05, w.r * 0.13, 0, Math.PI * 2);
     ctx.fill();
   
     ctx.restore();
   }
 
+  
   function drawFish(f) {
     ctx.beginPath();
     ctx.fillStyle = "#ffd166"; // golden fish;
