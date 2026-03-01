@@ -1,4 +1,5 @@
-/* styles.css (refreshed, no diff headers) */
+/* Edited styles.css (Moments scattered + remove button boxes + fix stray brace) */
+/* Source file: :contentReference[oaicite:0]{index=0} */
 
 :root{
   --bg:#fbfaf8;
@@ -153,7 +154,6 @@ p{
   position:relative;
   width:100%;
   min-height: calc(100vh - 78px);
-  /* keep title near the top, but give left breathing room */
   padding: 12px 24px 36px clamp(32px, 6vw, 80px);
   overflow:hidden;
 }
@@ -190,7 +190,6 @@ p{
   transform: translateY(-2px) scale(1.02);
 }
 
-
 /* positions + sizes (smaller, balanced) */
 .float-word.w1{ left: 10%; top: 46%; font-size: 42px; opacity:0.95; }
 .float-word.w2{ left: 60%; top: 26%; font-size: 48px; opacity:0.95; }
@@ -200,7 +199,6 @@ p{
 .float-word.w6{ left: 70%; top: 74%; font-size: 22px; opacity:0.75; }
 .float-word.w7{ left: 12%; top: 28%; font-size: 22px; opacity:0.75; }
 .float-word.w8{ left: 82%; top: 42%; font-size: 26px; opacity: 0.82; }
-}
 
 /* small helper text */
 .hint{
@@ -226,34 +224,7 @@ p{
   .float-word.w8{ font-size: 20px; }
 }
 
-/* Photo gallery inside modal */
-.gallery{
-  display:grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap:10px;
-  margin-top:10px;
-}
-
-.gallery a{
-  display:block;
-  border-radius: 12px;
-  overflow:hidden;
-  border:1px solid var(--border);
-  background:#fff;
-}
-
-.gallery img{
-  width:100%;
-  height:140px;
-  object-fit:cover;
-  display:block;
-}
-
-@media (max-width: 640px){
-  .gallery{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .gallery img{ height:120px; }
-}
-
+/* ---------------- Photos page layout ---------------- */
 .container {
   max-width: 1100px;
   margin: 0 auto;
@@ -298,49 +269,74 @@ p{
   transform: scale(1.01);
 }
 
-/* Moments page: same grid as Photos, but text-only tiles */
-.moment-item{
-  border: 0;
+/* ---------------- Moments page (SCATTERED, no boxes) ---------------- */
+.moments-field{
+  position: relative;
+  min-height: calc(100vh - 78px);
+  background: #ffffff; /* same as Photos */
+  overflow: hidden;
+}
+
+.moments-title{
+  margin: 16px 0 0;
+  padding: 0 24px;
+  font-size: 32px; /* match .page-title */
+}
+
+.moments-layer{
+  position: absolute;
+  inset: 0;
+}
+
+.moments-hint{
+  position: absolute;
+  left: 24px;
+  bottom: 22px;
+  color: rgba(31,31,31,0.55);
+  font-size:14px;
+}
+
+/* The clickable date-time text (button reset) */
+.moment-float{
+  position:absolute;
+  transform: translate(-50%, -50%);
+  border:0;
   background: transparent;
-  padding: 12px 6px;
-  cursor: pointer;
-  text-align: left;
+  padding:0;
+  margin:0;
   font: inherit;
+  cursor:pointer;
+  color: rgba(31,31,31,0.92);
+  line-height:1;
+  user-select:none;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
-.moment-item:focus{
-  outline: none;
-}
+.moment-float:focus{ outline:none; }
 
-.moment-item:focus-visible{
+.moment-float:focus-visible{
   outline: 2px solid rgba(122,78,45,0.25);
-  outline-offset: 4px;
+  outline-offset: 6px;
   border-radius: 10px;
 }
 
-/* No background, no border, just floating text */
-.moment-dt{
-  display: flex;
-  gap: 10px;
-  align-items: baseline;
-}
-
-.moment-date{
-  font-size: 22px;
+.moment-float .mf-date{
+  font-size: 20px;
   font-weight: 500;
-  color: rgba(31,31,31,0.92);
 }
 
-.moment-time{
+.moment-float .mf-time{
   font-size: 18px;
   color: rgba(31,31,31,0.65);
+  margin-left: 10px;
 }
 
-.moment-item:hover .moment-date,
-.moment-item:hover .moment-time{
-  transform: translateY(-1px);
+.moment-float:hover{
+  transform: translate(-50%, -50%) translateY(-2px) scale(1.02);
 }
 
+/* Lightbox */
 .lightbox {
   position: fixed;
   inset: 0;
