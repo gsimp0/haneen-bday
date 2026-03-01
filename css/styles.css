@@ -199,6 +199,8 @@ p{
 .float-word.w5{ left: 44%; top: 40%; font-size: 24px; opacity:0.78; }
 .float-word.w6{ left: 70%; top: 74%; font-size: 22px; opacity:0.75; }
 .float-word.w7{ left: 12%; top: 28%; font-size: 22px; opacity:0.75; }
+.float-word.w8{ left: 82%; top: 42%; font-size: 26px; opacity: 0.82; }
+}
 
 /* small helper text */
 .hint{
@@ -221,6 +223,7 @@ p{
   .float-word.w5{ font-size: 20px; }
   .float-word.w6{ font-size: 18px; }
   .float-word.w7{ font-size: 18px; }
+  .float-word.w8{ font-size: 20px; }
 }
 
 /* Photo gallery inside modal */
