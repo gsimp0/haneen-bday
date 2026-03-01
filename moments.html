@@ -1,683 +1,128 @@
-<!-- Save as: moments.html
-     Put in your repo root (or /pages/). Photos should be in: /assets/photos/
-     Example photo path: assets/photos/elephant-rocks.jpg
--->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Moments in Time</title>
-  <style>
-    :root{
-      --bg:#0f1216;
-      --panel:#151a21;
-      --panel2:#11151b;
-      --text:#e9edf2;
-      --muted:#aab3bf;
-      --border:rgba(255,255,255,.10);
-      --glow:rgba(255,255,255,.18);
-      --shadow: rgba(0,0,0,.45);
-      --radius:16px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      background: radial-gradient(1200px 700px at 20% 10%, rgba(255,255,255,.06), transparent 55%),
-                  radial-gradient(900px 600px at 80% 30%, rgba(255,255,255,.04), transparent 60%),
-                  var(--bg);
-      color:var(--text);
-      font-family: ui-serif, "TeX Gyre Termes", "Times New Roman", Times, serif;
-      letter-spacing:.2px;
-    }
+  <title>Moments</title>
 
-    .wrap{
-      max-width:1100px;
-      margin:0 auto;
-      padding:28px 18px 60px;
-    }
-
-    header{
-      display:flex;
-      gap:14px;
-      align-items:flex-end;
-      justify-content:space-between;
-      flex-wrap:wrap;
-      margin-bottom:18px;
-    }
-
-    .title{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
-    h1{
-      margin:0;
-      font-size:28px;
-      font-weight:600;
-    }
-    .subtitle{
-      margin:0;
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.35;
-      max-width:58ch;
-    }
-
-    .controls{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-    }
-
-    .search{
-      position:relative;
-      min-width:260px;
-      flex:1;
-    }
-    .search input{
-      width:100%;
-      padding:12px 12px 12px 38px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.04);
-      color:var(--text);
-      outline:none;
-    }
-    .search input:focus{border-color:rgba(255,255,255,.22)}
-    .search .icon{
-      position:absolute;
-      left:12px;
-      top:50%;
-      transform:translateY(-50%);
-      opacity:.7;
-      font-size:14px;
-      user-select:none;
-    }
-
-    .toggle{
-      display:flex;
-      border:1px solid var(--border);
-      border-radius:999px;
-      overflow:hidden;
-      background: rgba(255,255,255,.03);
-    }
-    .toggle button{
-      border:0;
-      background:transparent;
-      color:var(--muted);
-      padding:10px 12px;
-      cursor:pointer;
-      font-size:13px;
-    }
-    .toggle button[aria-pressed="true"]{
-      color:var(--text);
-      background: rgba(255,255,255,.07);
-    }
-
-    /* Grid mode */
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap:12px;
-      margin-top:16px;
-    }
-    @media (max-width:900px){
-      .grid{grid-template-columns: repeat(2, minmax(0, 1fr));}
-      .search{min-width:220px;}
-    }
-    @media (max-width:560px){
-      .grid{grid-template-columns: 1fr;}
-    }
-
-    .chip{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-      padding:14px 14px;
-      border-radius: var(--radius);
-      border:1px solid var(--border);
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-      box-shadow: 0 10px 24px var(--shadow);
-      cursor:pointer;
-      text-align:left;
-      transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
-      user-select:none;
-    }
-    .chip:hover{
-      transform: translateY(-1px);
-      border-color: rgba(255,255,255,.20);
-      box-shadow: 0 14px 30px rgba(0,0,0,.55);
-    }
-    .chip:focus-visible{
-      outline:2px solid rgba(255,255,255,.28);
-      outline-offset:2px;
-    }
-    .chip .dt{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-      font-size:13px;
-      letter-spacing:.2px;
-      color: var(--text);
-      opacity:.92;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-    .chip .tag{
-      font-size:12px;
-      color:var(--muted);
-      border:1px solid var(--border);
-      padding:3px 8px;
-      border-radius:999px;
-      background: rgba(0,0,0,.20);
-    }
-    .chip .preview{
-      color: var(--muted);
-      font-size:14px;
-      line-height:1.45;
-      margin:0;
-      overflow:hidden;
-      display:-webkit-box;
-      -webkit-line-clamp:2;
-      -webkit-box-orient:vertical;
-      min-height: 2.9em;
-    }
-
-    /* Constellation mode */
-    .sky{
-      position:relative;
-      height: 620px;
-      margin-top:18px;
-      border-radius: 22px;
-      border:1px solid var(--border);
-      background:
-        radial-gradient(700px 420px at 25% 30%, rgba(255,255,255,.05), transparent 60%),
-        radial-gradient(520px 360px at 78% 55%, rgba(255,255,255,.04), transparent 65%),
-        rgba(255,255,255,.02);
-      overflow:hidden;
-      box-shadow: 0 18px 40px rgba(0,0,0,.55);
-    }
-    .star{
-      position:absolute;
-      transform: translate(-50%, -50%);
-      border:1px solid var(--border);
-      background: rgba(0,0,0,.22);
-      color: var(--text);
-      padding:10px 12px;
-      border-radius: 999px;
-      cursor:pointer;
-      transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
-      box-shadow: 0 10px 18px rgba(0,0,0,.35);
-      white-space:nowrap;
-      user-select:none;
-      max-width:min(320px, 90vw);
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .star:hover{
-      transform: translate(-50%, -50%) scale(1.02);
-      border-color: rgba(255,255,255,.22);
-      box-shadow: 0 16px 26px rgba(0,0,0,.55);
-    }
-    .star .dt{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-      font-size:12px;
-      opacity:.92;
-      display:flex;
-      gap:10px;
-      align-items:center;
-    }
-    .star .tag{
-      font-size:11px;
-      color:var(--muted);
-      border:1px solid var(--border);
-      padding:2px 7px;
-      border-radius:999px;
-      background: rgba(0,0,0,.18);
-    }
-    .star:focus-visible{
-      outline:2px solid rgba(255,255,255,.28);
-      outline-offset:2px;
-    }
-
-    /* Modal */
-    .backdrop{
-      position:fixed;
-      inset:0;
-      background: rgba(0,0,0,.66);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding: 18px;
-      z-index:9999;
-    }
-    .backdrop.show{display:flex;}
-    .modal{
-      width:min(880px, 100%);
-      border-radius: 22px;
-      border:1px solid var(--border);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      box-shadow: 0 26px 70px rgba(0,0,0,.75);
-      overflow:hidden;
-    }
-    .modalHead{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:12px;
-      padding: 16px 16px 10px;
-      background: rgba(0,0,0,.18);
-      border-bottom: 1px solid var(--border);
-    }
-    .modalTitleWrap{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      min-width:0;
-    }
-    .modalTitle{
-      margin:0;
-      font-size:18px;
-      font-weight:600;
-      line-height:1.25;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-    }
-    .modalMeta{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-      font-size:12px;
-      color: var(--muted);
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-    .closeBtn{
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.04);
-      color: var(--text);
-      padding: 10px 12px;
-      border-radius: 12px;
-      cursor:pointer;
-      font-size:13px;
-    }
-    .closeBtn:focus-visible{
-      outline:2px solid rgba(255,255,255,.28);
-      outline-offset:2px;
-    }
-    .modalBody{
-      display:grid;
-      grid-template-columns: 1fr 1.1fr;
-      gap: 0;
-      background: rgba(0,0,0,.12);
-    }
-    @media (max-width:820px){
-      .modalBody{grid-template-columns: 1fr;}
-    }
-
-    .modalPhoto{
-      background: rgba(0,0,0,.20);
-      min-height: 320px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding: 14px;
-      border-right:1px solid var(--border);
-    }
-    @media (max-width:820px){
-      .modalPhoto{border-right:0; border-bottom:1px solid var(--border);}
-    }
-    .modalPhoto img{
-      max-width:100%;
-      max-height: 520px;
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.12);
-      box-shadow: 0 18px 45px rgba(0,0,0,.55);
-      object-fit:cover;
-      display:block;
-    }
-    .noPhoto{
-      color: var(--muted);
-      font-size:14px;
-      border:1px dashed rgba(255,255,255,.18);
-      border-radius: 16px;
-      padding: 18px;
-      text-align:center;
-      width: 100%;
-    }
-
-    .modalText{
-      padding: 16px 18px 20px;
-    }
-    .modalText p{
-      margin:0;
-      color: var(--text);
-      font-size:16px;
-      line-height:1.6;
-      white-space:pre-wrap;
-    }
-
-    .hint{
-      margin-top: 10px;
-      color: var(--muted);
-      font-size:12px;
-      line-height:1.35;
-    }
-
-    footer{
-      margin-top: 16px;
-      color: var(--muted);
-      font-size:12px;
-      line-height:1.4;
-      opacity:.9;
-    }
-    a{color:inherit}
-  </style>
+  <!-- Use the SAME stylesheet as the rest of your site -->
+  <link rel="stylesheet" href="css/styles.css?v=4">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div class="title">
-        <h1>Moments in Time</h1>
-        <p class="subtitle">Click a date and time. A memory opens. Some have photos. Some are just words.</p>
-      </div>
 
-      <div class="controls">
-        <div class="search">
-          <div class="icon">⌕</div>
-          <input id="searchInput" type="text" placeholder="Search: elephant rocks, kitchen, 2024..." autocomplete="off" />
-        </div>
+  <!-- Same nav as your other pages -->
+  <nav class="nav">
+    <div class="brand">04/03/2026</div>
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="letters.html">Letters</a>
+      <a href="game.html">Game</a>
+      <a href="photos.html">Photos</a>
+      <a class="active" href="moments.html">Moments</a>
+    </div>
+  </nav>
 
-        <div class="toggle" role="group" aria-label="View mode">
-          <button id="gridBtn" type="button" aria-pressed="true">Grid</button>
-          <button id="skyBtn" type="button" aria-pressed="false">Constellation</button>
-        </div>
-      </div>
-    </header>
+  <main class="page">
+    <div class="container">
+      <h1 class="page-title">Moments</h1>
 
-    <main>
-      <section id="gridView" class="grid" aria-label="Moments grid"></section>
-      <section id="skyView" class="sky" aria-label="Moments constellation" style="display:none;"></section>
-    </main>
+      <!-- Reuse the photos grid layout, but with floating text items -->
+      <div id="momentsGrid" class="gallery"></div>
+    </div>
+  </main>
 
-    <footer>
-      Tip: Edit the <code>moments</code> array in this file. For photos, put them in <code>assets/photos/</code> and set <code>photo</code> to the filename.
-    </footer>
-  </div>
-
-  <!-- Modal -->
-  <div id="backdrop" class="backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <!-- Reuse your existing modal styling from styles.css -->
+  <div class="modal-backdrop" id="backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal">
-      <div class="modalHead">
-        <div class="modalTitleWrap">
-          <h2 id="modalTitle" class="modalTitle">Title</h2>
-          <div id="modalMeta" class="modalMeta"></div>
-        </div>
-        <button id="closeBtn" class="closeBtn" type="button">Close</button>
+      <div class="top">
+        <h2 id="modalTitle"></h2>
+        <button class="btn" id="closeBtn" type="button">Close</button>
       </div>
 
-      <div class="modalBody">
-        <div class="modalPhoto" id="modalPhoto"></div>
-        <div class="modalText">
-          <p id="modalText"></p>
-          <div class="hint">Press Esc to close.</div>
-        </div>
-      </div>
+      <!-- optional photo area -->
+      <div id="modalExtra" style="margin-top:12px;"></div>
+
+      <p id="modalBody"></p>
     </div>
   </div>
 
   <script>
-    // 1) EDIT THESE MOMENTS
-    // date: any format you like (shown as text)
-    // time: any format you like
-    // title: optional short label
-    // text: the memory
-    // photo: optional filename in /assets/photos/ (example: "elephant-rocks.jpg")
-    // tags: optional for search/filter feel
+    // Put photos in /assets/photos/ and set photo filename if you want one.
     const moments = [
       {
         date: "14/02/2024",
         time: "3:12pm",
         title: "Elephant Rocks",
         text: "We visited Elephant Rocks.\nYou walked ahead like you knew I was there.\nI remember thinking: this is what safety feels like.",
-        photo: "elephant-rocks.jpg",
-        tags: ["travel", "nature"]
+        photo: "elephant-rocks.jpg"
       },
       {
         date: "02/11/2023",
         time: "9:48pm",
         title: "Kitchen light",
         text: "You were cooking and humming under your breath.\nI leaned on the doorway and watched.\nEverything felt quiet and certain.",
-        photo: "",
-        tags: ["kitchen"]
-      },
-      {
-        date: "21/01/2024",
-        time: "6:03am",
-        title: "First message",
-        text: "The message you sent that made my whole day lighter.\nI read it three times before I replied.",
-        photo: "",
-        tags: ["small", "firsts"]
+        photo: ""
       }
     ];
 
-    // 2) HELPERS
-    const $ = (id) => document.getElementById(id);
+    const grid = document.getElementById("momentsGrid");
+    const backdrop = document.getElementById("backdrop");
+    const closeBtn = document.getElementById("closeBtn");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalBody = document.getElementById("modalBody");
+    const modalExtra = document.getElementById("modalExtra");
 
-    function safeText(x){
-      return (x ?? "").toString();
-    }
+    function openMoment(m){
+      modalTitle.textContent = (m.title || "Moment");
+      modalBody.textContent = (m.text || "");
 
-    function previewText(text){
-      const t = safeText(text).replace(/\s+/g, " ").trim();
-      return t.length > 120 ? t.slice(0, 120) + "…" : t;
-    }
-
-    function momentLabel(m){
-      return `${safeText(m.date)}  ${safeText(m.time)}`.trim();
-    }
-
-    function momentSearchBlob(m){
-      return [
-        safeText(m.date),
-        safeText(m.time),
-        safeText(m.title),
-        safeText(m.text),
-        Array.isArray(m.tags) ? m.tags.join(" ") : ""
-      ].join(" ").toLowerCase();
-    }
-
-    // 3) RENDERING
-    const gridView = $("gridView");
-    const skyView = $("skyView");
-    const searchInput = $("searchInput");
-
-    function renderAll(){
-      const q = safeText(searchInput.value).trim().toLowerCase();
-      const filtered = moments
-        .map((m, idx) => ({...m, _idx: idx}))
-        .filter(m => q === "" ? true : momentSearchBlob(m).includes(q));
-
-      renderGrid(filtered);
-      renderSky(filtered);
-    }
-
-    function renderGrid(list){
-      gridView.innerHTML = "";
-      if (list.length === 0){
-        const empty = document.createElement("div");
-        empty.className = "chip";
-        empty.tabIndex = 0;
-        empty.style.cursor = "default";
-        empty.innerHTML = `
-          <div class="dt">No matches</div>
-          <p class="preview">Try a different search term.</p>
-        `;
-        gridView.appendChild(empty);
-        return;
-      }
-
-      for (const m of list){
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "chip";
-        btn.setAttribute("data-idx", m._idx);
-
-        const tag = (Array.isArray(m.tags) && m.tags.length)
-          ? `<span class="tag">${m.tags[0]}</span>`
-          : "";
-
-        btn.innerHTML = `
-          <div class="dt">
-            <span>${momentLabel(m)}</span>
-            ${tag}
-          </div>
-          <p class="preview">${previewText(m.text)}</p>
-        `;
-
-        btn.addEventListener("click", () => openMoment(m._idx));
-        gridView.appendChild(btn);
-      }
-    }
-
-    // Constellation placement with deterministic pseudo-random positions from index
-    function seededRand(seed){
-      // simple LCG
-      let s = (seed * 9301 + 49297) % 233280;
-      return s / 233280;
-    }
-
-    function renderSky(list){
-      skyView.innerHTML = "";
-      if (list.length === 0){
-        const msg = document.createElement("div");
-        msg.className = "noPhoto";
-        msg.style.margin = "18px";
-        msg.textContent = "No matches in constellation view.";
-        skyView.appendChild(msg);
-        return;
-      }
-
-      const pad = 60; // keep inside edges
-      const W = skyView.clientWidth || 900;
-      const H = skyView.clientHeight || 620;
-
-      for (const m of list){
-        const s1 = seededRand(m._idx + 1);
-        const s2 = seededRand(m._idx + 9);
-        const x = pad + s1 * (W - pad * 2);
-        const y = pad + s2 * (H - pad * 2);
-
-        const b = document.createElement("button");
-        b.type = "button";
-        b.className = "star";
-        b.setAttribute("data-idx", m._idx);
-        b.style.left = `${x}px`;
-        b.style.top = `${y}px`;
-
-        const tag = (Array.isArray(m.tags) && m.tags.length)
-          ? `<span class="tag">${m.tags[0]}</span>`
-          : "";
-
-        b.innerHTML = `
-          <div class="dt">
-            <span>${momentLabel(m)}</span>
-            ${tag}
-          </div>
-        `;
-
-        b.addEventListener("click", () => openMoment(m._idx));
-        skyView.appendChild(b);
-      }
-    }
-
-    // re-render constellation positions on resize
-    let resizeT = null;
-    window.addEventListener("resize", () => {
-      clearTimeout(resizeT);
-      resizeT = setTimeout(renderAll, 120);
-    });
-
-    // 4) MODAL
-    const backdrop = $("backdrop");
-    const modalTitle = $("modalTitle");
-    const modalMeta = $("modalMeta");
-    const modalPhoto = $("modalPhoto");
-    const modalText = $("modalText");
-    const closeBtn = $("closeBtn");
-
-    let lastFocusEl = null;
-
-    function openMoment(idx){
-      const m = moments[idx];
-      if (!m) return;
-
-      lastFocusEl = document.activeElement;
-
-      modalTitle.textContent = safeText(m.title) || "Memory";
-      modalMeta.textContent = momentLabel(m);
-
-      modalText.textContent = safeText(m.text);
-
-      modalPhoto.innerHTML = "";
-      const photoName = safeText(m.photo).trim();
-
-      if (photoName){
+      modalExtra.innerHTML = "";
+      if (m.photo){
         const img = document.createElement("img");
-        img.alt = safeText(m.title) || "Photo";
-        img.src = `assets/photos/${photoName}`;
+        img.src = `assets/photos/${m.photo}`;
+        img.alt = m.title || "Photo";
+        img.style.width = "100%";
+        img.style.borderRadius = "14px";
+        img.style.display = "block";
         img.onerror = () => {
-          modalPhoto.innerHTML = `<div class="noPhoto">Photo not found:<br><code>assets/photos/${photoName}</code></div>`;
+          modalExtra.innerHTML = `<p style="margin:0;color:var(--muted);">Photo not found: assets/photos/${m.photo}</p>`;
         };
-        modalPhoto.appendChild(img);
-      } else {
-        modalPhoto.innerHTML = `<div class="noPhoto">No photo for this moment.</div>`;
+        modalExtra.appendChild(img);
       }
 
-      backdrop.classList.add("show");
-      closeBtn.focus();
+      backdrop.style.display = "flex";
       document.body.style.overflow = "hidden";
     }
 
     function closeModal(){
-      backdrop.classList.remove("show");
+      backdrop.style.display = "none";
       document.body.style.overflow = "";
-      if (lastFocusEl && typeof lastFocusEl.focus === "function") lastFocusEl.focus();
     }
 
     closeBtn.addEventListener("click", closeModal);
-    backdrop.addEventListener("click", (e) => {
-      if (e.target === backdrop) closeModal();
-    });
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && backdrop.classList.contains("show")) closeModal();
-    });
+    backdrop.addEventListener("click", (e) => { if (e.target === backdrop) closeModal(); });
+    window.addEventListener("keydown", (e) => { if (e.key === "Escape" && backdrop.style.display === "flex") closeModal(); });
 
-    // 5) VIEW TOGGLE
-    const gridBtn = $("gridBtn");
-    const skyBtn = $("skyBtn");
-
-    function setView(mode){
-      const isGrid = mode === "grid";
-      gridView.style.display = isGrid ? "" : "none";
-      skyView.style.display = isGrid ? "none" : "";
-      gridBtn.setAttribute("aria-pressed", String(isGrid));
-      skyBtn.setAttribute("aria-pressed", String(!isGrid));
-      renderAll();
+    // Render using the same grid class as Photos, but each tile is just floating text (no border/bg)
+    function render(){
+      grid.innerHTML = "";
+      moments.forEach((m) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "moment-item"; // new class we’ll add in styles.css
+        btn.innerHTML = `
+          <div class="moment-dt">
+            <span class="moment-date">${m.date}</span>
+            <span class="moment-time">${m.time}</span>
+          </div>
+        `;
+        btn.addEventListener("click", () => openMoment(m));
+        grid.appendChild(btn);
+      });
     }
 
-    gridBtn.addEventListener("click", () => setView("grid"));
-    skyBtn.addEventListener("click", () => setView("sky"));
-
-    // 6) SEARCH
-    searchInput.addEventListener("input", () => renderAll());
-
-    // initial render
-    renderAll();
+    render();
   </script>
 </body>
 </html>
