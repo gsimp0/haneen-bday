@@ -204,8 +204,12 @@ p{
 .float-word.w8{ left: 82%; top: 42%; font-size: 26px; opacity:0.82; }
 
 /* NEW: Journal entry (w9) placed below title, left side */
-.float-word.w9{ left: 12%; top: 28%; font-size: 22px; opacity:0.75; }
-
+.float-word.w9{
+  left: 46%;
+  top: 56%;
+  font-size: 22px;
+  opacity:0.75;
+}
 /* small helper text */
 .hint{
   position:absolute;
