@@ -1,21 +1,20 @@
 const impressions = [
   {
-    title: "First impression",
+    title: "Belltop",
     body: `You felt calm.
-Like someone I could trust quickly.
-I remember thinking: this is going to matter.`
+I felt like you were someone I could trust quickly.
+I remember thinking how cool you were. How much I wanted to get to know you more. I was so excited to find out the things we had in common. I remember thinking how I rarely if ever meet someone that gets excited about the same things I do in the way you did.`
   },
   {
-    title: "Your voice",
-    body: `It had this steadiness to it.
-Not loud, not trying to win.
-Just sure of itself.`
+    title: "Watermelon",
+    body: `I remember sitting eating my watermon at the bottom of the psych building. In teh distance I caught a glace of a group walking up the hill. I could see you!
+I was so happy to see you and even more happy that when you got to the stairs to turned and said goodbye to the group and walked over to me.
+I was trying to be so cool.`
   },
   {
-    title: "How you looked at people",
+    title: "How you looked at the world",
     body: `You noticed things.
-Not in a scanning way, but in a caring way.
-I clocked it immediately.`
+In the most a caring way. I saw that you knew everything had something special about it and if anyone one was going to celebrate them it would be you..`
   },
   {
     title: "Your laugh",
