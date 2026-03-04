@@ -1,32 +1,147 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Photos</title>
+
+<link rel="stylesheet" href="css/styles.css?v=9">
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+</head>
+
 <body>
 
 <nav class="nav">
-  <div class="brand">04/03/2026</div>
-  <div class="links">
-    <a href="index.html">Home</a>
-    <a href="letters.html">First impressions</a>
-    <a href="game.html">Game</a>
-    <a class="active" href="photos.html">Photos</a>
-    <a href="moments.html">Moments</a>
-    <a href="poem.html">Journal entry</a>
-  </div>
+<div class="brand">04/03/2026</div>
+
+<div class="links">
+<a href="index.html">Home</a>
+<a href="letters.html">First impressions</a>
+<a href="game.html">Game</a>
+<a class="active" href="photos.html">Photos</a>
+<a href="moments.html">Moments</a>
+<a href="poem.html">Journal entry</a>
+</div>
 </nav>
+
 
 <main class="page container">
 
-  <h1 class="page-title">Photos</h1>
-  <div id="countMeta"></div>
+<h1 class="page-title">Photos</h1>
 
-  <div id="spread" class="gallery"></div>
+<div id="countMeta"></div>
+
+<div id="spread" class="gallery"></div>
 
 </main>
 
+
 <div id="lightbox" class="lightbox" style="display:none">
-  <button id="lbClose" class="lightbox-close">✕</button>
-  <img id="lbImg" class="lightbox-img">
-  <div id="lbIndex"></div>
+
+<button id="lbClose" class="lightbox-close">✕</button>
+
+<img id="lbImg" class="lightbox-img">
+
+<div id="lbIndex"></div>
+
 </div>
 
-<script src="js/photos.js"></script>
+
+<script>
+
+const photos = [
+"20251120_043726143_iOS.jpg",
+"20251120_043741610_iOS.jpg",
+"20251120_074029585_iOS.jpg",
+"20251120_090850239_iOS.jpg",
+"20251123_014451470_iOS.jpg",
+"20251207_112724802_iOS.jpg",
+"20251208_074015334_iOS.jpg",
+"20251208_131455443_iOS.jpg",
+"20251214_114438000_iOS.jpg",
+"20251225_085000298_iOS.jpg",
+"20251225_085116123_iOS.jpg",
+"20251229_064719708_iOS.jpg",
+"20251229_065203672_iOS.jpg",
+"20260105_225436396_iOS.jpg",
+"20260108_073023373_iOS.jpg",
+"20260112_090430948_iOS.jpg",
+"20260112_105841056_iOS.jpg",
+"20260112_213111340_iOS.jpg",
+"20260124_095253682_iOS.jpg",
+"20260124_095814566_iOS.jpg",
+"20260124_113841722_iOS.jpg",
+"20260129_053104498_iOS.jpg",
+"20260129_114147562_iOS.jpg",
+"20260131_055258084_iOS.jpg",
+"20260131_090515097_iOS.jpg",
+"20260131_231546810_iOS.jpg",
+"20260131_232755635_iOS.jpg",
+"20260201_002045142_iOS.jpg",
+"20260203_024154921_iOS.jpg",
+"20260203_125226635_iOS.jpg",
+"20260204_083053273_iOS.jpg",
+"20260205_001014389_iOS.jpg",
+"20260206_064458687_iOS.jpg",
+"20260209_090330628_iOS.jpg",
+"20260209_234552288_iOS.jpg",
+"20260209_234636389_iOS.jpg",
+"20260214_043544849_iOS.jpg",
+"20260216_031129741_iOS.jpg",
+"20260221_013025418_iOS.jpg",
+"20260221_013446092_iOS.jpg",
+"20260222_084321203_iOS.jpg"
+];
+
+
+const spread = document.getElementById("spread");
+const countMeta = document.getElementById("countMeta");
+
+const lightbox = document.getElementById("lightbox");
+const lbImg = document.getElementById("lbImg");
+const lbIndex = document.getElementById("lbIndex");
+const lbClose = document.getElementById("lbClose");
+
+
+countMeta.textContent = `${photos.length} photos`;
+
+photos.forEach((file, i) => {
+
+const src = `assets/${file}`;
+
+const div = document.createElement("button");
+div.className = "gallery-item";
+
+const img = document.createElement("img");
+
+img.src = src;
+
+div.appendChild(img);
+
+div.onclick = () => {
+
+lbImg.src = src;
+
+lbIndex.textContent = i + 1;
+
+lightbox.style.display = "grid";
+
+};
+
+spread.appendChild(div);
+
+});
+
+
+lbClose.onclick = () => {
+
+lightbox.style.display = "none";
+
+};
+
+</script>
 
 </body>
+</html>
