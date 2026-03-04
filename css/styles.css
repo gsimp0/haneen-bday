@@ -1,4 +1,4 @@
-/* styles.css */
+/* styles.css (cleaned + smaller photos + unified modal) */
 
 :root{
   --bg:#fbfaf8;
@@ -10,7 +10,7 @@
   --shadow:0 10px 30px rgba(0,0,0,0.06);
   --radius:18px;
   --max:980px;
-  --font: "Cormorant Garamond", serif;
+  --font:"Cormorant Garamond", serif;
 }
 
 *{ box-sizing:border-box; }
@@ -19,7 +19,7 @@ body{
   margin:0;
   font-family:var(--font);
   background:#ffffff;
-  color:#1f1f1f;
+  color:var(--text);
   line-height:1.5;
 }
 
@@ -27,7 +27,7 @@ a{ color:inherit; text-decoration:none; }
 
 /* Default container (used across content pages) */
 .container{
-  max-width: 1100px;
+  max-width:1100px;
   margin:0 auto;
   padding:24px;
 }
@@ -42,8 +42,8 @@ a{ color:inherit; text-decoration:none; }
   align-items:center;
   justify-content:space-between;
   padding:14px 24px;
-  background: rgba(251,250,248,0.75);
-  backdrop-filter: blur(10px);
+  background:rgba(251,250,248,0.75);
+  backdrop-filter:blur(10px);
   border-bottom:1px solid var(--border);
 }
 
@@ -65,7 +65,7 @@ a{ color:inherit; text-decoration:none; }
 /* Page wrapper leaves space for fixed nav */
 .page{ padding-top:78px; }
 
-/* Typography blocks */
+/* Typography */
 .kicker{
   color:var(--accent);
   font-weight:700;
@@ -86,7 +86,12 @@ p{
   font-weight:400;
 }
 
-/* Cards and buttons (used on other pages + modals) */
+@media (max-width: 780px){
+  h1{ font-size:36px; }
+  p{ font-size:18px; }
+}
+
+/* Cards and buttons (general) */
 .card{
   background:var(--card);
   border:1px solid var(--border);
@@ -107,16 +112,18 @@ p{
   font-weight:600;
 }
 
-/* Modal */
-.modal-backdrop{
+/* =========================================================
+   Unified modal (use .backdrop + .modal + .close)
+   ========================================================= */
+.backdrop{
   position:fixed;
   inset:0;
   background:rgba(0,0,0,0.4);
-  display:none;
+  display:none;              /* show with JS by setting display:flex */
   align-items:center;
   justify-content:center;
   padding:20px;
-  z-index:60;
+  z-index:1000;
 }
 
 .modal{
@@ -125,7 +132,8 @@ p{
   border-radius:var(--radius);
   border:1px solid var(--border);
   box-shadow:var(--shadow);
-  padding:18px;
+  padding:28px;
+  position:relative;
 }
 
 .modal .top{
@@ -143,23 +151,35 @@ p{
   color:var(--text);
 }
 
-/* ---------- Floating constellation home ---------- */
+.close{
+  position:absolute;
+  top:10px;
+  right:14px;
+  border:0;
+  background:transparent;
+  font-size:24px;
+  cursor:pointer;
+}
+
+/* =========================================================
+   Home floating constellation
+   ========================================================= */
 .space{
-  min-height: calc(100vh - 78px);
-  background: #ffffff;
+  min-height:calc(100vh - 78px);
+  background:#ffffff;
 }
 
 .space-inner{
   position:relative;
   width:100%;
-  min-height: calc(100vh - 78px);
-  padding: 12px 24px 36px clamp(32px, 6vw, 80px);
+  min-height:calc(100vh - 78px);
+  padding:12px 24px 36px clamp(32px, 6vw, 80px);
   overflow:hidden;
 }
 
 .space-title{
   font-size:56px;
-  margin: 10px 0 10px;
+  margin:10px 0 10px;
 }
 
 .space-sub{
@@ -168,7 +188,6 @@ p{
   max-width:70ch;
 }
 
-/* clickable words */
 .float-word{
   position:absolute;
   display:inline-block;
@@ -176,313 +195,266 @@ p{
   border:0;
   padding:0;
   cursor:pointer;
-  color: rgba(31,31,31,0.92);
+  color:rgba(31,31,31,0.92);
   font-weight:500;
   letter-spacing:0.2px;
   line-height:1;
   user-select:none;
-  transition: transform 140ms ease, opacity 140ms ease;
-  font: inherit;
+  transition:transform 140ms ease, opacity 140ms ease;
+  font:inherit;
 }
 
-/* remove button focus box on floating words */
 .float-word:focus{ outline:none; }
 .float-word:focus-visible{ outline:none; }
 
-.float-word:hover{
-  transform: translateY(-2px) scale(1.02);
-}
+.float-word:hover{ transform:translateY(-2px) scale(1.02); }
 
-/* positions + sizes (smaller, balanced) */
-.float-word.w1{ left: 10%; top: 46%; font-size: 42px; opacity:0.95; }
-.float-word.w2{ left: 60%; top: 26%; font-size: 48px; opacity:0.95; }
-.float-word.w3{ left: 22%; top: 68%; font-size: 30px; opacity:0.85; }
-.float-word.w4{ left: 72%; top: 58%; font-size: 28px; opacity:0.85; }
-.float-word.w5{ left: 44%; top: 40%; font-size: 24px; opacity:0.78; }
-.float-word.w6{ left: 70%; top: 74%; font-size: 22px; opacity:0.75; }
-.float-word.w7{ left: 12%; top: 28%; font-size: 22px; opacity:0.75; }
-.float-word.w8{ left: 82%; top: 42%; font-size: 26px; opacity:0.82; }
+.float-word.w1{ left:10%; top:46%; font-size:42px; opacity:0.95; }
+.float-word.w2{ left:60%; top:26%; font-size:48px; opacity:0.95; }
+.float-word.w3{ left:22%; top:68%; font-size:30px; opacity:0.85; }
+.float-word.w4{ left:72%; top:58%; font-size:28px; opacity:0.85; }
+.float-word.w5{ left:44%; top:40%; font-size:24px; opacity:0.78; }
+.float-word.w6{ left:70%; top:74%; font-size:22px; opacity:0.75; }
+.float-word.w7{ left:12%; top:28%; font-size:22px; opacity:0.75; }
+.float-word.w8{ left:82%; top:42%; font-size:26px; opacity:0.82; }
+.float-word.w9{ left:46%; top:56%; font-size:22px; opacity:0.75; }
 
-/* NEW: Journal entry (w9) placed below title, left side */
-.float-word.w9{
-  left: 46%;
-  top: 56%;
-  font-size: 22px;
-  opacity:0.75;
-}
-/* small helper text */
 .hint{
   position:absolute;
-  left: clamp(32px, 6vw, 80px);
-  bottom: 22px;
-  color: rgba(31,31,31,0.55);
+  left:clamp(32px, 6vw, 80px);
+  bottom:22px;
+  color:rgba(31,31,31,0.55);
   font-size:14px;
 }
 
-/* responsive */
 @media (max-width: 780px){
-  h1{ font-size: 36px; }
-  .space-title{ font-size: 40px; }
-
-  .float-word.w1{ font-size: 36px; }
-  .float-word.w2{ font-size: 40px; }
-  .float-word.w3{ font-size: 26px; }
-  .float-word.w4{ font-size: 24px; }
-  .float-word.w5{ font-size: 20px; }
-  .float-word.w6{ font-size: 18px; }
-  .float-word.w7{ font-size: 18px; }
-  .float-word.w8{ font-size: 20px; }
-  .float-word.w9{ font-size: 18px; }
+  .space-title{ font-size:40px; }
+  .float-word.w1{ font-size:36px; }
+  .float-word.w2{ font-size:40px; }
+  .float-word.w3{ font-size:26px; }
+  .float-word.w4{ font-size:24px; }
+  .float-word.w5{ font-size:20px; }
+  .float-word.w6{ font-size:18px; }
+  .float-word.w7{ font-size:18px; }
+  .float-word.w8{ font-size:20px; }
+  .float-word.w9{ font-size:18px; }
 }
 
-/* ---------------- Photos page layout ---------------- */
-.page-title {
-  margin: 16px 0 20px;
-  font-size: 32px;
+/* =========================================================
+   Photos page (grid gallery layout)
+   ========================================================= */
+.page-title{
+  margin:16px 0 20px;
+  font-size:32px;
 }
 
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:14px;
 }
 
-@media (max-width: 900px) {
-  .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 900px){
+  .gallery{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
 }
-@media (max-width: 560px) {
-  .gallery { grid-template-columns: 1fr; }
-}
-
-.gallery-item {
-  border: 0;
-  padding: 0;
-  background: transparent;
-  cursor: pointer;
+@media (max-width: 560px){
+  .gallery{ grid-template-columns:1fr; }
 }
 
-.gallery-item img {
-  width: 100%;
-  height: 260px;
-  object-fit: cover;
-  border-radius: 14px;
-  display: block;
-  transition: transform 120ms ease;
+.gallery-item{
+  border:0;
+  padding:0;
+  background:transparent;
+  cursor:pointer;
 }
 
-.gallery-item:hover img {
-  transform: scale(1.01);
+.gallery-item img{
+  width:100%;
+  height:190px;              /* smaller than 260px */
+  object-fit:cover;
+  border-radius:14px;
+  display:block;
+  transition:transform 120ms ease;
 }
 
-/* ---------------- Moments page (SCATTERED, no boxes) ---------------- */
+.gallery-item:hover img{ transform:scale(1.01); }
+
+/* =========================================================
+   Moments page (scattered, no boxes)
+   ========================================================= */
 .moments-field{
-  position: relative;
-  min-height: calc(100vh - 78px);
-  background: #ffffff;
-  overflow: hidden;
+  position:relative;
+  min-height:calc(100vh - 78px);
+  background:#ffffff;
+  overflow:hidden;
 }
 
 .moments-title{
-  margin: 16px 0 0;
-  padding: 0 24px;
-  font-size: 32px;
+  margin:16px 0 0;
+  padding:0 24px;
+  font-size:32px;
 }
 
 .moments-layer{
-  position: absolute;
-  inset: 0;
+  position:absolute;
+  inset:0;
 }
 
 .moments-hint{
-  position: absolute;
-  left: 24px;
-  bottom: 22px;
-  color: rgba(31,31,31,0.55);
+  position:absolute;
+  left:24px;
+  bottom:22px;
+  color:rgba(31,31,31,0.55);
   font-size:14px;
 }
 
-/* The clickable date-time text (button reset) */
 .moment-float{
   position:absolute;
-  transform: translate(-50%, -50%);
+  transform:translate(-50%, -50%);
   border:0;
-  background: transparent;
+  background:transparent;
   padding:0;
   margin:0;
-  font: inherit;
+  font:inherit;
   cursor:pointer;
-  color: rgba(31,31,31,0.92);
+  color:rgba(31,31,31,0.92);
   line-height:1;
   user-select:none;
-  -webkit-appearance: none;
-  appearance: none;
+  -webkit-appearance:none;
+  appearance:none;
 }
 
 .moment-float:focus{ outline:none; }
-
 .moment-float:focus-visible{
-  outline: 2px solid rgba(122,78,45,0.25);
-  outline-offset: 6px;
-  border-radius: 10px;
+  outline:2px solid rgba(122,78,45,0.25);
+  outline-offset:6px;
+  border-radius:10px;
 }
 
 .moment-float .mf-date{
-  font-size: 20px;
-  font-weight: 500;
+  font-size:20px;
+  font-weight:500;
 }
 
 .moment-float .mf-time{
-  font-size: 18px;
-  color: rgba(31,31,31,0.65);
-  margin-left: 10px;
+  font-size:18px;
+  color:rgba(31,31,31,0.65);
+  margin-left:10px;
 }
 
 .moment-float:hover{
-  transform: translate(-50%, -50%) translateY(-2px) scale(1.02);
+  transform:translate(-50%, -50%) translateY(-2px) scale(1.02);
 }
 
-/* Lightbox */
-.lightbox {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.78);
-  display: grid;
-  place-items: center;
-  padding: 24px;
-  z-index: 9999;
+/* =========================================================
+   Lightbox (for moments or photos)
+   ========================================================= */
+.lightbox{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.78);
+  display:grid;
+  place-items:center;
+  padding:24px;
+  z-index:9999;
 }
 
-.lightbox-img {
-  max-width: min(1100px, 96vw);
-  max-height: 86vh;
-  border-radius: 14px;
+.lightbox-img{
+  max-width:min(1100px, 96vw);
+  max-height:86vh;
+  border-radius:14px;
 }
 
-.lightbox-close {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  width: 44px;
-  height: 44px;
-  border-radius: 999px;
-  border: 0;
-  cursor: pointer;
-  font-size: 18px;
+.lightbox-close{
+  position:fixed;
+  top:16px;
+  right:16px;
+  width:44px;
+  height:44px;
+  border-radius:999px;
+  border:0;
+  cursor:pointer;
+  font-size:18px;
 }
 
-/* Sesame rain */
+/* =========================================================
+   Sesame rain
+   ========================================================= */
 .sesame-seed{
-  position: fixed;
-  top: -20px;
-  width: 6px;
-  height: 10px;
-  background: #e8d9a8;
-  border-radius: 50% / 60%;
-  pointer-events: none;
-  z-index: 9999;
-  animation: sesameFall linear forwards;
+  position:fixed;
+  top:-20px;
+  width:6px;
+  height:10px;
+  background:#e8d9a8;
+  border-radius:50% / 60%;
+  pointer-events:none;
+  z-index:9999;
+  animation:sesameFall linear forwards;
 }
 
 @keyframes sesameFall{
   to{
-    transform: translateY(110vh) rotate(360deg);
-    opacity: 0.8;
+    transform:translateY(110vh) rotate(360deg);
+    opacity:0.8;
   }
 }
 
 /* Poem / journal entry page */
 .poem-page{
-  max-width: 600px;
-  margin: 120px auto;
-  line-height: 1.8;
-  font-size: 1.2rem;
-  white-space: pre-line;
+  max-width:600px;
+  margin:120px auto;
+  line-height:1.8;
+  font-size:1.2rem;
+  white-space:pre-line;
 }
 
-/* ----- Centered modal for impressions page ----- */
-
-.backdrop{
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.4);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 20px;
-  z-index: 1000;
-}
-
-.modal{
-  width: min(680px, 100%);
-  background: white;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-
-  padding: 28px;
-  position: relative;
-}
-
-.close{
-  position: absolute;
-  top: 12px;
-  right: 16px;
-
-  border: 0;
-  background: transparent;
-  font-size: 24px;
-  cursor: pointer;
-}
-
-
-/* --- Scattered photos page --- */
-
+/* =========================================================
+   Scattered photos page (THIS is the one that was too big)
+   ========================================================= */
 .photo-field{
-  position: relative;
-  min-height: calc(100vh - 78px);
-  background: #ffffff;
-  overflow: hidden;
+  position:relative;
+  min-height:calc(100vh - 78px);
+  background:#ffffff;
+  overflow:hidden;
 }
 
 /* clickable photo */
 .photo-float{
-  position: absolute;
-  border: 0;
-  padding: 0;
-  background: transparent;
-  cursor: pointer;
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-  transform: translate(-50%, -50%);
+  position:absolute;
+  border:0;
+  padding:0;
+  background:transparent;
+  cursor:pointer;
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 10px 30px rgba(0,0,0,0.06);
+  transform:translate(-50%, -50%);
 }
 
-.photo-float:focus{ outline: none; }
+.photo-float:focus{ outline:none; }
 .photo-float:focus-visible{
-  outline: 2px solid rgba(122,78,45,0.25);
-  outline-offset: 6px;
-  border-radius: 16px;
+  outline:2px solid rgba(122,78,45,0.25);
+  outline-offset:6px;
+  border-radius:16px;
 }
 
 .photo-float img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
 }
 
-/* size variants */
-.photo-float.s1{ width: 160px; height: 210px; }
-.photo-float.s2{ width: 220px; height: 290px; }
-.photo-float.s3{ width: 280px; height: 360px; }
-.photo-float.s4{ width: 360px; height: 460px; }
+/* Smaller size variants (reduced a lot) */
+.photo-float.s1{ width:90px;  height:120px; }
+.photo-float.s2{ width:120px; height:160px; }
+.photo-float.s3{ width:150px; height:200px; }
+.photo-float.s4{ width:190px; height:250px; }
 
-/* mobile downscale */
+/* Mobile downscale (even smaller) */
 @media (max-width: 700px){
-  .photo-float.s1{ width: 120px; height: 160px; }
-  .photo-float.s2{ width: 170px; height: 220px; }
-  .photo-float.s3{ width: 220px; height: 290px; }
-  .photo-float.s4{ width: 270px; height: 360px; }
+  .photo-float.s1{ width:72px;  height:96px; }
+  .photo-float.s2{ width:96px;  height:128px; }
+  .photo-float.s3{ width:120px; height:160px; }
+  .photo-float.s4{ width:150px; height:200px; }
 }
