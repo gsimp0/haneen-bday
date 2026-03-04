@@ -1,147 +1,152 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Photos</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Photos</title>
 
-<link rel="stylesheet" href="css/styles.css?v=9">
-
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=9">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-<nav class="nav">
-<div class="brand">04/03/2026</div>
+  <nav class="nav">
+    <div class="brand">04/03/2026</div>
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="letters.html">First impressions</a>
+      <a href="game.html">Game</a>
+      <a class="active" href="photos.html">Photos</a>
+      <a href="moments.html">Moments</a>
+      <a href="poem.html">Journal entry</a>
+    </div>
+  </nav>
 
-<div class="links">
-<a href="index.html">Home</a>
-<a href="letters.html">First impressions</a>
-<a href="game.html">Game</a>
-<a class="active" href="photos.html">Photos</a>
-<a href="moments.html">Moments</a>
-<a href="poem.html">Journal entry</a>
-</div>
-</nav>
+  <main class="page container">
+    <h1 class="page-title">Photos</h1>
+    <div id="countMeta"></div>
 
+    <!-- CHANGED: field that will hold scattered photos -->
+    <div id="spread" class="photo-field" aria-label="Photos"></div>
+  </main>
 
-<main class="page container">
+  <!-- Lightbox (keep using your existing CSS in styles.css) -->
+  <div id="lightbox" class="lightbox" style="display:none">
+    <button id="lbClose" class="lightbox-close" type="button" aria-label="Close">✕</button>
+    <img id="lbImg" class="lightbox-img" alt="">
+    <div id="lbIndex"></div>
+  </div>
 
-<h1 class="page-title">Photos</h1>
+  <script>
+    const photos = [
+      "20251120_043726143_iOS.jpg",
+      "20251120_043741610_iOS.jpg",
+      "20251120_074029585_iOS.jpg",
+      "20251120_090850239_iOS.jpg",
+      "20251123_014451470_iOS.jpg",
+      "20251207_112724802_iOS.jpg",
+      "20251208_074015334_iOS.jpg",
+      "20251208_131455443_iOS.jpg",
+      "20251214_114438000_iOS.jpg",
+      "20251225_085000298_iOS.jpg",
+      "20251225_085116123_iOS.jpg",
+      "20251229_064719708_iOS.jpg",
+      "20251229_065203672_iOS.jpg",
+      "20260105_225436396_iOS.jpg",
+      "20260108_073023373_iOS.jpg",
+      "20260112_090430948_iOS.jpg",
+      "20260112_105841056_iOS.jpg",
+      "20260112_213111340_iOS.jpg",
+      "20260124_095253682_iOS.jpg",
+      "20260124_095814566_iOS.jpg",
+      "20260124_113841722_iOS.jpg",
+      "20260129_053104498_iOS.jpg",
+      "20260129_114147562_iOS.jpg",
+      "20260131_055258084_iOS.jpg",
+      "20260131_090515097_iOS.jpg",
+      "20260131_231546810_iOS.jpg",
+      "20260131_232755635_iOS.jpg",
+      "20260201_002045142_iOS.jpg",
+      "20260203_024154921_iOS.jpg",
+      "20260203_125226635_iOS.jpg",
+      "20260204_083053273_iOS.jpg",
+      "20260205_001014389_iOS.jpg",
+      "20260206_064458687_iOS.jpg",
+      "20260209_090330628_iOS.jpg",
+      "20260209_234552288_iOS.jpg",
+      "20260209_234636389_iOS.jpg",
+      "20260214_043544849_iOS.jpg",
+      "20260216_031129741_iOS.jpg",
+      "20260221_013025418_iOS.jpg",
+      "20260221_013446092_iOS.jpg",
+      "20260222_084321203_iOS.jpg"
+    ];
 
-<div id="countMeta"></div>
+    const spread = document.getElementById("spread");
+    const countMeta = document.getElementById("countMeta");
 
-<div id="spread" class="photo-field"></div>
+    const lightbox = document.getElementById("lightbox");
+    const lbImg = document.getElementById("lbImg");
+    const lbIndex = document.getElementById("lbIndex");
+    const lbClose = document.getElementById("lbClose");
 
-</main>
+    countMeta.textContent = `${photos.length} photos`;
 
+    function clamp(n, min, max){
+      return Math.max(min, Math.min(max, n));
+    }
 
-<div id="lightbox" class="lightbox" style="display:none">
+    // whitespace margins
+    const marginVw = 10;
+    const marginVhTop = 18;     // keeps photos below fixed nav/title area
+    const marginVhBottom = 10;
 
-<button id="lbClose" class="lightbox-close">✕</button>
+    // weighted sizes (more small)
+    const sizePool = ["s1","s1","s1","s2","s2","s3","s4"];
 
-<img id="lbImg" class="lightbox-img">
+    photos.forEach((file, i) => {
+      const src = `assets/${file}`;
 
-<div id="lbIndex"></div>
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = `photo-float ${sizePool[i % sizePool.length]}`;
 
-</div>
+      const left = clamp(Math.random() * 100, marginVw, 100 - marginVw);
+      const top  = clamp(Math.random() * 100, marginVhTop, 100 - marginVhBottom);
 
+      btn.style.left = left + "vw";
+      btn.style.top  = top + "vh";
 
-<script>
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = `Photo ${i + 1}`;
+      img.loading = "lazy";
 
-const photos = [
-"20251120_043726143_iOS.jpg",
-"20251120_043741610_iOS.jpg",
-"20251120_074029585_iOS.jpg",
-"20251120_090850239_iOS.jpg",
-"20251123_014451470_iOS.jpg",
-"20251207_112724802_iOS.jpg",
-"20251208_074015334_iOS.jpg",
-"20251208_131455443_iOS.jpg",
-"20251214_114438000_iOS.jpg",
-"20251225_085000298_iOS.jpg",
-"20251225_085116123_iOS.jpg",
-"20251229_064719708_iOS.jpg",
-"20251229_065203672_iOS.jpg",
-"20260105_225436396_iOS.jpg",
-"20260108_073023373_iOS.jpg",
-"20260112_090430948_iOS.jpg",
-"20260112_105841056_iOS.jpg",
-"20260112_213111340_iOS.jpg",
-"20260124_095253682_iOS.jpg",
-"20260124_095814566_iOS.jpg",
-"20260124_113841722_iOS.jpg",
-"20260129_053104498_iOS.jpg",
-"20260129_114147562_iOS.jpg",
-"20260131_055258084_iOS.jpg",
-"20260131_090515097_iOS.jpg",
-"20260131_231546810_iOS.jpg",
-"20260131_232755635_iOS.jpg",
-"20260201_002045142_iOS.jpg",
-"20260203_024154921_iOS.jpg",
-"20260203_125226635_iOS.jpg",
-"20260204_083053273_iOS.jpg",
-"20260205_001014389_iOS.jpg",
-"20260206_064458687_iOS.jpg",
-"20260209_090330628_iOS.jpg",
-"20260209_234552288_iOS.jpg",
-"20260209_234636389_iOS.jpg",
-"20260214_043544849_iOS.jpg",
-"20260216_031129741_iOS.jpg",
-"20260221_013025418_iOS.jpg",
-"20260221_013446092_iOS.jpg",
-"20260222_084321203_iOS.jpg"
-];
+      btn.appendChild(img);
 
+      btn.addEventListener("click", () => {
+        lbImg.src = src;
+        lbIndex.textContent = `(${i + 1})`;
+        lightbox.style.display = "grid";
+      });
 
-const spread = document.getElementById("spread");
-const countMeta = document.getElementById("countMeta");
+      spread.appendChild(btn);
+    });
 
-const lightbox = document.getElementById("lightbox");
-const lbImg = document.getElementById("lbImg");
-const lbIndex = document.getElementById("lbIndex");
-const lbClose = document.getElementById("lbClose");
+    function closeLightbox(){
+      lightbox.style.display = "none";
+      lbImg.src = "";
+    }
 
-
-countMeta.textContent = `${photos.length} photos`;
-
-photos.forEach((file, i) => {
-
-const src = `assets/${file}`;
-
-const div = document.createElement("button");
-div.className = "gallery-item";
-
-const img = document.createElement("img");
-
-img.src = src;
-
-div.appendChild(img);
-
-div.onclick = () => {
-
-lbImg.src = src;
-
-lbIndex.textContent = i + 1;
-
-lightbox.style.display = "grid";
-
-};
-
-spread.appendChild(div);
-
-});
-
-
-lbClose.onclick = () => {
-
-lightbox.style.display = "none";
-
-};
-
-</script>
+    lbClose.addEventListener("click", closeLightbox);
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && lightbox.style.display !== "none") closeLightbox();
+    });
+  </script>
 
 </body>
 </html>
