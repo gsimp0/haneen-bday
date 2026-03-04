@@ -10,7 +10,7 @@ I remember thinking how cool you were. How much I wanted to get to know you more
 I was so happy to see you and even more happy that when you got to the stairs to turned and said goodbye to the group and walked over to me.`
   },
   {
-    title: "IHow you looked at the world",
+    title: "How you looked at the world",
     body: `I loved first noticing the way you saw things.
 In the most a caring way. I saw that you knew everything had something special about it and if anyone one was going to celebrate them it would be you.`
   },
