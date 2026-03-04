@@ -35,12 +35,9 @@
 
   countMeta.textContent = `${photos.length} prints`;
 
-  function pad2(n){
-    return String(n).padStart(2,"0");
-  }
+  function pad2(n){ return String(n).padStart(2,"0"); }
 
   photos.forEach((file, i) => {
-
     const num = i + 1;
     const src = `assets/photos/${file}`;
 
@@ -57,7 +54,6 @@
     frame.appendChild(img);
 
     const cap = document.createElement("figcaption");
-
     const left = document.createElement("span");
     left.className = "idx";
     left.textContent = `(${pad2(num)})`;
@@ -74,7 +70,6 @@
     });
 
     spread.appendChild(fig);
-
   });
 
   function closeLightbox(){
@@ -83,15 +78,11 @@
   }
 
   lbClose.addEventListener("click", closeLightbox);
-
   lightbox.addEventListener("click", (e) => {
     if (e.target === lightbox) closeLightbox();
   });
 
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && lightbox.style.display !== "none") {
-      closeLightbox();
-    }
+    if (e.key === "Escape" && lightbox.style.display !== "none") closeLightbox();
   });
-
 </script>
