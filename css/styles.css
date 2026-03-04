@@ -398,3 +398,40 @@ p{
   font-size: 1.2rem;
   white-space: pre-line;
 }
+
+/* ----- Centered modal for impressions page ----- */
+
+.backdrop{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+  z-index: 1000;
+}
+
+.modal{
+  width: min(680px, 100%);
+  background: white;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+
+  padding: 28px;
+  position: relative;
+}
+
+.close{
+  position: absolute;
+  top: 12px;
+  right: 16px;
+
+  border: 0;
+  background: transparent;
+  font-size: 24px;
+  cursor: pointer;
+}
