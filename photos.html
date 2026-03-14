@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Photos</title>
 
-  <link rel="stylesheet" href="css/styles.css?v=11">
+  <link rel="stylesheet" href="css/styles.css?v=12">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 </head>
 
@@ -38,7 +38,8 @@
     <div id="lbIndex"></div>
   </div>
 
-  <script>
+      <script>
+    
       const photos = [
         "20251120_043726143_iOS.jpg",
         "20251120_043741610_iOS.jpg",
@@ -88,41 +89,37 @@
       
       countMeta.textContent = `${photos.length} photos`;
       
-      /* make the page tall so we can scroll */
-      const pageHeight = photos.length * 280;
-      spread.style.height = pageHeight + "px";
+      /* make page tall so we can scroll */
+      spread.style.height = photos.length * 320 + "px";
       
-      /* photo size variations */
-      const sizes = [120, 150, 180, 210];
+      /* editorial scatter layout */
+      const columnPositions = [10, 32, 55, 78];
+      const sizes = ["s1","s2","s3","s2","s1","s4","s2"];
       
-      photos.forEach((file, i) => {
+      let currentY = 120;
       
-        const src = `assets/${file}`;
+      photos.forEach((file,i)=>{
       
         const btn = document.createElement("button");
-        btn.className = "photo-float";
+        btn.className = `photo-float ${sizes[i % sizes.length]}`;
         btn.type = "button";
       
+        const column = columnPositions[Math.floor(Math.random()*columnPositions.length)];
+      
+        btn.style.left = column + "%";
+        btn.style.top = currentY + "px";
+      
         const img = document.createElement("img");
-        img.src = src;
+        img.src = `assets/${file}`;
         img.loading = "lazy";
-      
-        /* horizontal scatter */
-        btn.style.left = Math.random() * 80 + 10 + "%";
-      
-        /* vertical stacking with randomness */
-        const baseY = i * 260;
-        const offset = Math.random() * 140;
-        btn.style.top = baseY + offset + "px";
-      
-        /* random sizes */
-        const size = sizes[Math.floor(Math.random()*sizes.length)];
-        btn.style.width = size + "px";
       
         btn.appendChild(img);
         spread.appendChild(btn);
+      
+        currentY += 280 + Math.random()*260;
       });
-  </script>
+      
+    </script>
 
 </body>
 </html>
