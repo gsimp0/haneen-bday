@@ -415,11 +415,11 @@ p{
 .photo-field{
   position:relative;
   width:100%;
-  height:12000px;   /* creates long scrolling page */
-  background:#ffffff;
+  max-width:1100px;
+  margin:0 auto;
+  height:9000px;
 }
 
-/* clickable photo */
 .photo-float{
   position:absolute;
   border:0;
@@ -429,41 +429,17 @@ p{
   border-radius:14px;
   overflow:hidden;
   box-shadow:0 10px 30px rgba(0,0,0,0.06);
-
-}
-
-.photo-float{
-  transition: transform 0.15s ease;
-}
-
-.photo-float:hover{
-  transform:scale(1.03);
-}
-
-.photo-float:focus{ outline:none; }
-.photo-float:focus-visible{
-  outline:2px solid rgba(122,78,45,0.25);
-  outline-offset:6px;
-  border-radius:16px;
 }
 
 .photo-float img{
   width:100%;
-  height:100%;
-  object-fit:cover;
+  height:auto;
   display:block;
+  border-radius:14px;
 }
 
-/* Smaller size variants (reduced a lot) */
-.photo-float.s1{ width:90px;  height:120px; }
-.photo-float.s2{ width:120px; height:160px; }
-.photo-float.s3{ width:150px; height:200px; }
-.photo-float.s4{ width:190px; height:250px; }
-
-/* Mobile downscale (even smaller) */
-@media (max-width: 700px){
-  .photo-float.s1{ width:72px;  height:96px; }
-  .photo-float.s2{ width:96px;  height:128px; }
-  .photo-float.s3{ width:120px; height:160px; }
-  .photo-float.s4{ width:150px; height:200px; }
-}
+/* photo sizes */
+.photo-float.s1{ width:140px; }
+.photo-float.s2{ width:180px; }
+.photo-float.s3{ width:230px; }
+.photo-float.s4{ width:320px; }
