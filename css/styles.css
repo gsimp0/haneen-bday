@@ -414,9 +414,9 @@ p{
    ========================================================= */
 .photo-field{
   position:relative;
-  min-height:calc(100vh - 78px);
+  width:100%;
+  height:12000px;   /* creates long scrolling page */
   background:#ffffff;
-  overflow:hidden;
 }
 
 /* clickable photo */
@@ -429,7 +429,15 @@ p{
   border-radius:14px;
   overflow:hidden;
   box-shadow:0 10px 30px rgba(0,0,0,0.06);
-  transform:translate(-50%, -50%);
+
+}
+
+.photo-float{
+  transition: transform 0.15s ease;
+}
+
+.photo-float:hover{
+  transform:scale(1.03);
 }
 
 .photo-float:focus{ outline:none; }
